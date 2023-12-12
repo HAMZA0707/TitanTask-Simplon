@@ -3,7 +3,7 @@ package titantask;
 import java.time.LocalDateTime;
 
 public class Tache {
-	
+	private int id ;
 	private String name ;
 	private String description ;
 	private LocalDateTime date_de_creation ;
@@ -29,8 +29,12 @@ public class Tache {
 		this.priorite = priorite;
 		this.categorie = categorie;
 	}
-	
-	
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
+	}
 	public String getName() {
 		return name;
 	}
@@ -67,14 +71,13 @@ public class Tache {
 	public void setCategorie(Categorie categorie) {
 		this.categorie = categorie;
 	}
-	@Override
-	public String toString() {
-		return "Tache [name=" + name + ", description=" + description + ", date_de_creation=" + date_de_creation
-				+ ", date_de_miseajour=" + date_de_miseajour + ", priorite=" + priorite + ", categorie=" + categorie
-				+ "]";
-	}
 	
 
-	
+	@Override
+	public String toString() {
+		return "Tache [id=" + id + ", name=" + name + ", description=" + description + ", date_de_creation="
+				+ date_de_creation + ", date_de_miseajour=" + date_de_miseajour + ", priorite=" + priorite
+				+ ", categorie=" + categorie + "]";
+	}
 	
 }
