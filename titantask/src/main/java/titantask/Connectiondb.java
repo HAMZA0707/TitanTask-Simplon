@@ -7,6 +7,9 @@ import java.sql.SQLException;
 import java.sql.Statement;
 
 public class Connectiondb {
+	
+	public static void main(String[] args) throws ClassNotFoundException {
+
 	String url= "jdbc:mysql://localhost:3306/titanSchool"; // table details
     String username = "root"; // MySQL credentials
     String password = "";
@@ -41,4 +44,5 @@ public class Connectiondb {
 		// TODO Auto-generated catch block
 		e.printStackTrace();
 	} 
+	}
 }
