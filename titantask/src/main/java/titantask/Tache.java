@@ -1,13 +1,13 @@
 package titantask;
 
-import java.util.Date;
+import java.time.LocalDateTime;
 
 public class Tache {
 	private int id ;
 	private String name ;
 	private String description ;
-	private Date date_de_creation ;
-	private Date date_de_miseajour ;
+	private LocalDateTime date_de_creation ;
+	private LocalDateTime date_de_miseajour ;
 	private String priorite ;
 	private Categorie categorie;
 	
