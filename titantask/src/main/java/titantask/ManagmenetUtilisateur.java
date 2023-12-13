@@ -63,19 +63,20 @@ public class ManagmenetUtilisateur implements ICrud_Utilisateur {
 
 
     @Override
-    public void supprimer(int id) {
+    public boolean supprimer(int id) {
         try{
             String query = "delete from utilisateur where id_utilisateur = ?";
             statement = con.prepareStatement(query);
             statement.setInt(1,id);
             statement.execute();
+            return true;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
     @Override
-    public void modifier(int id) {
+    public boolean modifier(int id) {
         System.out.println("Entre votre Nom : ");
         String nom = scanner.next();
         System.out.println("Entre votre Fonction : ");
@@ -93,6 +94,7 @@ public class ManagmenetUtilisateur implements ICrud_Utilisateur {
             statement.setString(4, password);
             statement.setInt(5,id);
             statement.execute();
+            return true;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
