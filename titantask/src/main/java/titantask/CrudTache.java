@@ -81,13 +81,118 @@ public class CrudTache implements ICrudtache{
         }
 	};
 	public void supprimer() {
+        ConnectionBaseDonne connectionBaseDonne = new ConnectionBaseDonne();
+
+		Scanner scanner = new Scanner(System.in);
 		
-	};
+		System.out.print(" entrez le nom de la tache a supprimer : ");
+		String nameSup = scanner.next();
+		try (Connection connection = connectionBaseDonne.connectionBD()) {
+
+	        Statement testStatement = connection.createStatement();
+	
+	        ResultSet verifTache = testStatement.executeQuery("SELECT * FROM `tache` WHERE name = '"+nameSup+"'");
+	
+			if(verifTache.next()) {
+        
+
+	            // Create a statement
+	            Statement statement = connection.createStatement();
+	
+	            // Execute a query
+	            int resultSet = statement.executeUpdate("DELETE FROM `tache` WHERE name = '"+nameSup+"'");
+	    		System.out.println("delete : "+resultSet);
+	            
+	            // Close resources
+	            statement.close();
+
+			}else {
+				System.out.print("ce tache n'existe pas");
+			}	
+		}catch (SQLException e) {
+            e.printStackTrace();
+        }
+		};
 	public void modifier() {
+		ConnectionBaseDonne connectionBaseDonne = new ConnectionBaseDonne();
+
+		LocalDateTime localdate = LocalDateTime.now();
+        localdate.format(formatter);
+		Scanner scanner = new Scanner(System.in);
 		
+		System.out.print(" entrez le nom de la tache a modifier : ");
+		String nameModif = scanner.next();
+		try (Connection connection = connectionBaseDonne.connectionBD()) {
+
+	        Statement testStatement = connection.createStatement();
+	
+	        ResultSet verifTache = testStatement.executeQuery("SELECT * FROM `tache` WHERE name = '"+nameModif+"'");
+	
+			if(verifTache.next()) {
+			
+				System.out.println("new name : ");
+				String name = scanner.next();
+				
+				System.out.println("new description : ");
+				String description = scanner.next();
+				
+				System.out.println("new priorite : ");
+				String priorite = scanner.next();
+				
+				System.out.println("new categorie : ");
+				String categorie = scanner.next();
+				
+	
+	            // Create a statement
+	            Statement statement = connection.createStatement();
+	
+	            // Execute a query
+	            int resultSet = statement.executeUpdate("UPDATE `tache` SET `name`='"+name+"',`description`='"+description+"',`date_de_miseajour`='"+localdate+"',`priorite`='"+priorite+"',`categorie`='"+categorie+"' WHERE name = '"+nameModif+"'");
+	    		System.out.println("updated ");
+	            
+	
+	            // Close resources
+	            statement.close();
+			}
+			else {
+				System.out.print("ce tache n'existe pas");
+			}
+		}catch (SQLException e) {
+            e.printStackTrace();
+        }
 	};
 	public void afficher() {
+		ConnectionBaseDonne connectionBaseDonne = new ConnectionBaseDonne();
+        
+		try (Connection connection = connectionBaseDonne.connectionBD()) {
 		
+		    // Create a statement
+		    Statement statement = connection.createStatement();
+		
+		    // Execute a query
+		    ResultSet resultSet = statement.executeQuery("select * from tache");
+		
+		    // Process the results
+		    while (resultSet.next()) {
+		        // Retrieve data using resultSet.getString() methods
+		        String name = resultSet.getString("name");
+		        String description = resultSet.getString("description");
+		        String priorite = resultSet.getString("priorite");
+		        String categorie = resultSet.getString("categorie");
+		        String date_de_creation = resultSet.getString("date_de_creation");
+		        String date_de_miseajour = resultSet.getString("date_de_miseajour");
+
+		        // categories list :
+		        System.out.print("name : "+name+" description : "+description+" priorite : "+priorite+" categorie : "+categorie+" date_de_creation : "+date_de_creation+" date_de_miseajour : "+date_de_miseajour+"\n");
+		    }
+		
+		    // Close resources
+		    resultSet.close();
+		    statement.close();
+		
+		} catch (SQLException e) {
+		    e.printStackTrace();
+		}
 	};
 	public void filtrerCategorie(String nom_Categorie) {
 		
@@ -99,8 +204,9 @@ public class CrudTache implements ICrudtache{
 	
 	public static void main(String[] args) {
 		
+		
 		CrudTache test = new CrudTache();
-		test.ajouter();
+		test.supprimer();
 		
 	}
 }
