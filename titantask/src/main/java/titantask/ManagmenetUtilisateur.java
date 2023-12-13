@@ -78,11 +78,12 @@ public class ManagmenetUtilisateur implements ICrud_Utilisateur {
     }
 
     @Override
-    public List<Utilisateur> afficher() {
+    public List<Utilisateur> afficher(int id) {
         List<Utilisateur> utilisateurs = new ArrayList<>();
         try{
             String query = "select * from utilisateur where id_utilisateur = ?";
             statement = con.prepareCall(query);
+            statement.setInt(1,id);
             ResultSet resultSet = statement.executeQuery();
 
             while (resultSet.next()){
