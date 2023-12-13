@@ -103,7 +103,7 @@ public class CrudTache implements ICrudtache{
             Statement statement = connection.createStatement();
 
             // Execute a query
-            int resultSet = statement.executeUpdate("INSERT INTO `tache`( `name`, `description`, `date_de_creation`, `date_de_miseajour`, `priorite`, `categorie`,'id_utilisateur') VALUES ('"+name+"','"+description+"','"+localdate+"','"+localdate+"','"+priorite+"','"+categorie+"','"+idUtilisateur+")");
+            int resultSet = statement.executeUpdate("INSERT INTO `tache`( `name`, `description`, `date_de_creation`, `date_de_miseajour`, `priorite`, `categorie`,`id_utilisateur`) VALUES ('"+name+"','"+description+"','"+localdate+"','"+localdate+"','"+priorite+"','"+categorie+"','"+idUtilisateur+"')");
     		System.out.println("add tache : "+resultSet);
             
 
@@ -234,7 +234,7 @@ public class CrudTache implements ICrudtache{
 	            Statement statement = connection.createStatement();
 	
 	            // Execute a query
-	            int resultSet1 = statement.executeUpdate("UPDATE `tache` SET `name`='"+name+"',`description`='"+description+"',`date_de_miseajour`='"+localdate+"',`priorite`='"+priorite+"',`categorie`='"+categorie+"' WHERE name = '"+nameModif+"'");
+	            int resultSet1 = statement.executeUpdate("UPDATE `tache` SET `name`='"+name+"',`description`='"+description+"',`date_de_miseajour`='"+localdate+"',`priorite`='"+priorite+"',`categorie`='"+categorie+"' WHERE name = '"+nameModif+"' and id_utilisateur = '"+idUtilisateur+"'");
 	    		System.out.println("updated tache ");
 	            
 	
@@ -303,7 +303,7 @@ public class CrudTache implements ICrudtache{
 		
 		
 		CrudTache test = new CrudTache();
-		test.ajouter(1);
+		test.afficher(1);
 		
 	}
 }
