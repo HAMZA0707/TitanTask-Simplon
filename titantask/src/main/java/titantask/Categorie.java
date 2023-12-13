@@ -3,10 +3,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
 import java.util.Scanner;
-
-import titantask.ConnectionBaseDonne;
 
 public class Categorie {
 	private int id;
@@ -52,9 +49,11 @@ public class Categorie {
              
              // Close resources
      		statementCat.close();
+     		scanner.close();
      		return 1;
 	    } catch (SQLException e) {
 	        e.printStackTrace();
+     		scanner.close();
 	        return 0;
 	       
 	    }
@@ -88,9 +87,11 @@ public class Categorie {
 			}else {
 				System.out.print("cette categorie n'existe pas");
 			}	
+     		scanner.close();
 			return 1;
 		}catch (SQLException e) {
             e.printStackTrace();
+     		scanner.close();
             return 0;
         }
 		};
