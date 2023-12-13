@@ -16,7 +16,7 @@ import java.time.format.DateTimeFormatter;
 public class CrudTache implements ICrudtache{
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-	public void ajouter() {
+	public int ajouter() {
         LocalDateTime localdate = LocalDateTime.now();
         localdate.format(formatter);
 		
@@ -57,17 +57,41 @@ public class CrudTache implements ICrudtache{
                 //add to list
                 categorieList.add(column);
             }
-            System.out.println("entrez le numero de la categorie ou tappez 0 pour ajoutez une : ");
+            int numCategorie;
+            do {
+            	System.out.println("entrez le numero de la categorie ou tappez 0 pour ajoutez une : ");
+                
+                numCategorie = scanner.nextInt();
+                
+	            if (numCategorie == 0) {
+	            	Statement statementCat = connection.createStatement();
+	
+	         		System.out.print("new categorie : ");
+	         		String newcat = scanner.next();
+	                 // Execute a query
+	                 int resultSetCat = statementCat.executeUpdate("INSERT INTO `categorie`( `categorie_nom`) VALUES ('"+newcat+"')");
+	         		System.out.println("add categorie : "+resultSetCat);
+	                 
+	         		categorie = newcat ;
+	                 // Close resources
+	                 statement.close();
+	            }
+	            else if(numCategorie<=categorieList.size()) {
+	                categorie =  categorieList.get(numCategorie-1);
+	            }
+	            else {
+	                System.out.println("not exist categorie");
+	            }
             
-            int numCategorie = scanner.nextInt();
+            }while(numCategorie>categorieList.size() || numCategorie < 0);
             
-            categorie =  categorieList.get(numCategorie-1);
             // Close resources
             resultSet.close();
             statement.close();
-
+            
         } catch (SQLException e) {
             e.printStackTrace();
+           
         }
     
 		
@@ -80,17 +104,18 @@ public class CrudTache implements ICrudtache{
 
             // Execute a query
             int resultSet = statement.executeUpdate("INSERT INTO `tache`( `name`, `description`, `date_de_creation`, `date_de_miseajour`, `priorite`, `categorie`) VALUES ('"+name+"','"+description+"','"+localdate+"','"+localdate+"','"+priorite+"','"+categorie+"')");
-    		System.out.println("add : "+resultSet);
+    		System.out.println("add tache : "+resultSet);
             
 
             // Close resources
             statement.close();
-
+            return 1;
         } catch (SQLException e) {
             e.printStackTrace();
+            return 0;
         }
 	};
-	public void supprimer() {
+	public int supprimer() {
         ConnectionBaseDonne connectionBaseDonne = new ConnectionBaseDonne();
 
 		Scanner scanner = new Scanner(System.in);
@@ -111,7 +136,7 @@ public class CrudTache implements ICrudtache{
 	
 	            // Execute a query
 	            int resultSet = statement.executeUpdate("DELETE FROM `tache` WHERE name = '"+nameSup+"'");
-	    		System.out.println("delete : "+resultSet);
+	    		System.out.println("delete tache : "+resultSet);
 	            
 	            // Close resources
 	            statement.close();
@@ -119,11 +144,13 @@ public class CrudTache implements ICrudtache{
 			}else {
 				System.out.print("ce tache n'existe pas");
 			}	
+			return 1;
 		}catch (SQLException e) {
             e.printStackTrace();
+            return 0;
         }
 		};
-	public void modifier() {
+	public int modifier() {
 		ConnectionBaseDonne connectionBaseDonne = new ConnectionBaseDonne();
 
 		LocalDateTime localdate = LocalDateTime.now();
@@ -149,29 +176,83 @@ public class CrudTache implements ICrudtache{
 				System.out.println("new priorite : ");
 				String priorite = scanner.next();
 				
-				System.out.println("new categorie : ");
-				String categorie = scanner.next();
+				System.out.print("liste des categories existantes :\n  ");
+				String categorie = "" ;
+
+		            // Create a statement
+		            Statement statementListCat = connection.createStatement();
+
+		            // Execute a query
+		            ResultSet resultSet = statementListCat.executeQuery("select * from categorie");
+
+		            ArrayList<String> categorieList = new ArrayList<>() ;
+		            // Process the results
+		            int i=1;
+		            while (resultSet.next()) {
+		                // Retrieve data using resultSet.getString() methods
+		                String column = resultSet.getString("categorie_nom");
+		                // categories list :
+		                System.out.println(i+" - "+column);
+		                i++;
+		                //add to list
+		                categorieList.add(column);
+		            }
+		            int numCategorie;
+		            do {
+		            	System.out.println("entrez le numero de la categorie ou tappez 0 pour ajoutez une : ");
+		                
+		                numCategorie = scanner.nextInt();
+		                
+			            if (numCategorie == 0) {
+			            	Statement statementCat = connection.createStatement();
+			
+			         		System.out.print("new categorie : ");
+			         		String newcat = scanner.next();
+			                 // Execute a query
+			                 int resultSetCat = statementCat.executeUpdate("INSERT INTO `categorie`( `categorie_nom`) VALUES ('"+newcat+"')");
+			         		System.out.println("add categorie : "+resultSetCat);
+			                 
+			         		categorie = newcat ;
+			                 // Close resources
+			         		statementCat.close();
+			            }
+			            else if(numCategorie<=categorieList.size()) {
+			                categorie =  categorieList.get(numCategorie-1);
+			            }
+			            else {
+			                System.out.println("not exist categorie");
+			            }
+		            
+		            }while(numCategorie>categorieList.size() || numCategorie < 0);
+		            
+		            // Close resources
+		            resultSet.close();
+		            statementListCat.close();
 				
 	
 	            // Create a statement
 	            Statement statement = connection.createStatement();
 	
 	            // Execute a query
-	            int resultSet = statement.executeUpdate("UPDATE `tache` SET `name`='"+name+"',`description`='"+description+"',`date_de_miseajour`='"+localdate+"',`priorite`='"+priorite+"',`categorie`='"+categorie+"' WHERE name = '"+nameModif+"'");
-	    		System.out.println("updated ");
+	            int resultSet1 = statement.executeUpdate("UPDATE `tache` SET `name`='"+name+"',`description`='"+description+"',`date_de_miseajour`='"+localdate+"',`priorite`='"+priorite+"',`categorie`='"+categorie+"' WHERE name = '"+nameModif+"'");
+	    		System.out.println("updated tache ");
 	            
 	
 	            // Close resources
 	            statement.close();
+	            
 			}
 			else {
 				System.out.print("ce tache n'existe pas");
 			}
+			return 1;
 		}catch (SQLException e) {
             e.printStackTrace();
+            return 0;
         }
+		
 	};
-	public void afficher() {
+	public int afficher() {
 		ConnectionBaseDonne connectionBaseDonne = new ConnectionBaseDonne();
         
 		try (Connection connection = connectionBaseDonne.connectionBD()) {
@@ -194,21 +275,26 @@ public class CrudTache implements ICrudtache{
 
 		        // categories list :
 		        System.out.print("name : "+name+" description : "+description+" priorite : "+priorite+" categorie : "+categorie+" date_de_creation : "+date_de_creation+" date_de_miseajour : "+date_de_miseajour+"\n");
+		        
 		    }
-		
 		    // Close resources
 		    resultSet.close();
 		    statement.close();
+		    
+		    return 1;
+
 		
 		} catch (SQLException e) {
 		    e.printStackTrace();
+		    return 0;
 		}
 	};
-	public void filtrerCategorie(String nom_Categorie) {
-		
+	public int filtrerCategorie(String nom_Categorie) {
+		return 1;
 	};
-	public void tri(int choix) {
-		
+	public int tri(int choix) {
+		return 1;
+
 	};
 	
 	
@@ -216,7 +302,7 @@ public class CrudTache implements ICrudtache{
 		
 		
 		CrudTache test = new CrudTache();
-		test.ajouter();
+		test.modifier();
 		
 	}
 }
