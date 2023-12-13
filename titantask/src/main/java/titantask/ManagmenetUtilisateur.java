@@ -16,7 +16,7 @@ public class ManagmenetUtilisateur implements ICrud_Utilisateur {
     Scanner scanner = new Scanner(System.in);
     PreparedStatement statement = null;
     @Override
-    public void ajouter() {
+    public boolean ajouter() {
         System.out.println("Entre votre Nom : ");
         String nom = scanner.next();
         System.out.println("Entre votre Fonction : ");
@@ -25,36 +25,58 @@ public class ManagmenetUtilisateur implements ICrud_Utilisateur {
         String email = scanner.next();
         System.out.println("Entre votre password : ");
         String password = scanner.next();
-        try{
-            String query = "insert into utilisateur( nom, fonction, email , PASSWORD) values ( ?, ?, ?, ?)";
-            statement =con.prepareCall(query);
-            statement.setString(1, nom);
-            statement.setString(2, fonction);
-            statement.setString(3, email);
-            statement.setString(4, password);
-            statement.execute();
+
+        // Vérifier si l'utilisateur existe déjà
+        try {
+            String checkQuery = "SELECT COUNT(*) FROM utilisateur WHERE email = ?";
+             statement = con.prepareStatement(checkQuery);
+            statement.setString(1, email);
+            ResultSet resultSet = statement.executeQuery();
+
+            if (resultSet.next()) {
+                int count = resultSet.getInt(1);
+                if (count > 0) {
+                    System.out.println("L'utilisateur avec l'email '" + email + "' existe déjà.");
+                    return false;
+                }
+                else {
+                    String insertQuery = "INSERT INTO utilisateur(nom, fonction, email, PASSWORD) VALUES (?, ?, ?, ?)";
+                    statement = con.prepareCall(insertQuery);
+                    statement.setString(1, nom);
+                    statement.setString(2, fonction);
+                    statement.setString(3, email);
+                    statement.setString(4, password);
+                    statement.execute();
+                    System.out.println("Utilisateur ajouté avec succès.");
+                    return true;
+                }
+            }
+
+        // Ajouter l'utilisateur
+
+
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-
+        return false;
     }
 
+
     @Override
-    public void supprimer(int id) {
+    public boolean supprimer(int id) {
         try{
             String query = "delete from utilisateur where id_utilisateur = ?";
             statement = con.prepareStatement(query);
             statement.setInt(1,id);
             statement.execute();
+            return true;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
 
     @Override
-    public void modifier(int id) {
-
-
+    public boolean modifier(int id) {
         System.out.println("Entre votre Nom : ");
         String nom = scanner.next();
         System.out.println("Entre votre Fonction : ");
@@ -72,6 +94,7 @@ public class ManagmenetUtilisateur implements ICrud_Utilisateur {
             statement.setString(4, password);
             statement.setInt(5,id);
             statement.execute();
+            return true;
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
