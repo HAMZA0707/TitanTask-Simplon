@@ -16,7 +16,7 @@ import java.time.format.DateTimeFormatter;
 public class CrudTache implements ICrudtache{
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 
-	public int ajouter() {
+	public int ajouter(int idUtilisateur) {
         LocalDateTime localdate = LocalDateTime.now();
         localdate.format(formatter);
 		
@@ -103,7 +103,7 @@ public class CrudTache implements ICrudtache{
             Statement statement = connection.createStatement();
 
             // Execute a query
-            int resultSet = statement.executeUpdate("INSERT INTO `tache`( `name`, `description`, `date_de_creation`, `date_de_miseajour`, `priorite`, `categorie`) VALUES ('"+name+"','"+description+"','"+localdate+"','"+localdate+"','"+priorite+"','"+categorie+"')");
+            int resultSet = statement.executeUpdate("INSERT INTO `tache`( `name`, `description`, `date_de_creation`, `date_de_miseajour`, `priorite`, `categorie`,'id_utilisateur') VALUES ('"+name+"','"+description+"','"+localdate+"','"+localdate+"','"+priorite+"','"+categorie+"','"+idUtilisateur+")");
     		System.out.println("add tache : "+resultSet);
             
 
@@ -115,7 +115,7 @@ public class CrudTache implements ICrudtache{
             return 0;
         }
 	};
-	public int supprimer() {
+	public int supprimer(int idUtilisateur) {
         ConnectionBaseDonne connectionBaseDonne = new ConnectionBaseDonne();
 
 		Scanner scanner = new Scanner(System.in);
@@ -126,7 +126,7 @@ public class CrudTache implements ICrudtache{
 
 	        Statement testStatement = connection.createStatement();
 	
-	        ResultSet verifTache = testStatement.executeQuery("SELECT * FROM `tache` WHERE name = '"+nameSup+"'");
+	        ResultSet verifTache = testStatement.executeQuery("SELECT * FROM `tache` WHERE name = '"+nameSup+"' and id_utilisateur = '"+idUtilisateur+"'");
 	
 			if(verifTache.next()) {
         
@@ -135,7 +135,7 @@ public class CrudTache implements ICrudtache{
 	            Statement statement = connection.createStatement();
 	
 	            // Execute a query
-	            int resultSet = statement.executeUpdate("DELETE FROM `tache` WHERE name = '"+nameSup+"'");
+	            int resultSet = statement.executeUpdate("DELETE FROM `tache` WHERE name = '"+nameSup+"' and id_utilisateur = '"+idUtilisateur+"'");
 	    		System.out.println("delete tache : "+resultSet);
 	            
 	            // Close resources
@@ -150,7 +150,7 @@ public class CrudTache implements ICrudtache{
             return 0;
         }
 		};
-	public int modifier() {
+	public int modifier(int idUtilisateur) {
 		ConnectionBaseDonne connectionBaseDonne = new ConnectionBaseDonne();
 
 		LocalDateTime localdate = LocalDateTime.now();
@@ -252,7 +252,8 @@ public class CrudTache implements ICrudtache{
         }
 		
 	};
-	public int afficher() {
+	public int afficher(int idUtilisateur) {
+		
 		ConnectionBaseDonne connectionBaseDonne = new ConnectionBaseDonne();
         
 		try (Connection connection = connectionBaseDonne.connectionBD()) {
@@ -261,7 +262,7 @@ public class CrudTache implements ICrudtache{
 		    Statement statement = connection.createStatement();
 		
 		    // Execute a query
-		    ResultSet resultSet = statement.executeQuery("select * from tache");
+		    ResultSet resultSet = statement.executeQuery("select * from tache WHERE id_utilisateur = '"+idUtilisateur+"' ");
 		
 		    // Process the results
 		    while (resultSet.next()) {
@@ -302,7 +303,7 @@ public class CrudTache implements ICrudtache{
 		
 		
 		CrudTache test = new CrudTache();
-		test.modifier();
+		test.ajouter(1);
 		
 	}
 }
