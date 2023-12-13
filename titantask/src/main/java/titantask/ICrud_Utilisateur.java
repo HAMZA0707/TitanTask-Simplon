@@ -8,5 +8,5 @@ public interface ICrud_Utilisateur {
 	public void supprimer(int id);
 	public void modifier(int id);
 	public List<Utilisateur> afficher();
-	public Utilisateur login(String email,String password);
+	public Utilisateur login();
 }
