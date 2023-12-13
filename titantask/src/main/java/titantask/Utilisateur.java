@@ -61,4 +61,14 @@ public class Utilisateur {
         this.password = password;
     }
 
+    @Override
+    public String toString() {
+        return "Utilisateur{" +
+                "nom='" + nom + '\'' +
+                ", fonction='" + fonction + '\'' +
+                ", email='" + email + '\'' +
+                ", password='" + password + '\'' +
+                ", id=" + id +
+                '}';
+    }
 }
