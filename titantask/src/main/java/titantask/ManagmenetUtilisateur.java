@@ -1,9 +1,11 @@
 package titantask;
 
 import java.sql.Connection;
+import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -101,7 +103,29 @@ public class ManagmenetUtilisateur implements ICrud_Utilisateur {
     }
 
     @Override
-    public Utilisateur login(String email, String password) {
-        return null;
+    public Utilisateur login() {
+    	Utilisateur u = null;
+    	int i=0;
+		Scanner cl =new Scanner(System.in);
+		System.out.println("Entre votre email:");
+		String email =cl.next();
+		System.out.println("Entre votre password:");
+		String password =cl.next();
+		try {
+		Statement st = con.createStatement();
+	    ResultSet rs;
+		rs = st.executeQuery("select * from utilisateur where email='"+email+"' and password='"+password+"'");
+	
+		 while(rs.next()) {
+			 u =new Utilisateur(rs.getString("nom"),rs.getString("fonction"),rs.getString("email"),rs.getString("password"),rs.getInt("id_utilisateur"));
+		 }
+		st.close();
+		con.close();
+		return u;
+		}catch (Exception e) {
+				System.out.print(e);
+			}
+		return null;
+
     }
 }
