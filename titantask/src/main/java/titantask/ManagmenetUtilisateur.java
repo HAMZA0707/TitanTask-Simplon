@@ -79,7 +79,7 @@ public class ManagmenetUtilisateur implements ICrud_Utilisateur {
     public List<Utilisateur> afficher() {
         List<Utilisateur> utilisateurs = new ArrayList<>();
         try{
-            String query = "select * from utilisateur";
+            String query = "select * from utilisateur where id_utilisateur = ?";
             statement = con.prepareCall(query);
             ResultSet resultSet = statement.executeQuery();
 
