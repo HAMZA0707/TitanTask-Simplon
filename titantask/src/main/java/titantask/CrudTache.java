@@ -5,6 +5,7 @@ import titantask.ConnectionBaseDonne;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.Statement;
+import java.util.ArrayList;
 import java.util.Map;
 import java.util.Scanner;
 import java.sql.ResultSet;
@@ -35,8 +36,8 @@ public class CrudTache implements ICrudtache{
 		
 
 		System.out.print("liste des categories existantes :\n  ");
-		
-	   /* try (Connection connection = connectionBaseDonne.connectionBD()) {
+		String categorie = "" ;
+	   try (Connection connection = connectionBaseDonne.connectionBD()) {
 
             // Create a statement
             Statement statement = connection.createStatement();
@@ -44,23 +45,32 @@ public class CrudTache implements ICrudtache{
             // Execute a query
             ResultSet resultSet = statement.executeQuery("select * from categorie");
 
+            ArrayList<String> categorieList = new ArrayList<>() ;
             // Process the results
+            int i=1;
             while (resultSet.next()) {
                 // Retrieve data using resultSet.getString() methods
-                String column1 = resultSet.getString("column1");
+                String column = resultSet.getString("categorie_nom");
                 // categories list :
-                System.out.print(column1);
+                System.out.println(i+" - "+column);
+                i++;
+                //add to list
+                categorieList.add(column);
             }
-
+            System.out.println("entrez le numero de la categorie ou tappez 0 pour ajoutez une : ");
+            
+            int numCategorie = scanner.nextInt();
+            
+            categorie =  categorieList.get(numCategorie-1);
             // Close resources
             resultSet.close();
             statement.close();
 
         } catch (SQLException e) {
             e.printStackTrace();
-        }*/
+        }
     
-		String categorie = scanner.next();
+		
 		
 		
 		try (Connection connection = connectionBaseDonne.connectionBD()) {
@@ -206,7 +216,7 @@ public class CrudTache implements ICrudtache{
 		
 		
 		CrudTache test = new CrudTache();
-		test.supprimer();
+		test.ajouter();
 		
 	}
 }
