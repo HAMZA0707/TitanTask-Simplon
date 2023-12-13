@@ -78,28 +78,27 @@ public class ManagmenetUtilisateur implements ICrud_Utilisateur {
     }
 
     @Override
-    public List<Utilisateur> afficher() {
-        List<Utilisateur> utilisateurs = new ArrayList<>();
+    public Utilisateur afficher(int id) {
+        Utilisateur utilisateur = null;
         try{
             String query = "select * from utilisateur where id_utilisateur = ?";
             statement = con.prepareCall(query);
+            statement.setInt(1,id);
             ResultSet resultSet = statement.executeQuery();
-
             while (resultSet.next()){
                 int id_utilisateurs = resultSet.getInt("id_utilisateur");
                 String noms = resultSet.getString("nom");
                 String fonctions = resultSet.getString("fonction");
                 String emails = resultSet.getNString("email");
                 String passwords = resultSet.getNString("PASSWORD");
-                Utilisateur utilisateur=new Utilisateur(noms,fonctions,emails,passwords,id_utilisateurs);
-                utilisateurs.add(utilisateur);
+                utilisateur=new Utilisateur(noms,fonctions,emails,passwords,id_utilisateurs);
             }
 
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return utilisateurs;
+        return utilisateur;
     }
 
     @Override
