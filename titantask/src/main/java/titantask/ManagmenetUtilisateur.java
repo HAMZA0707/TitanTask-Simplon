@@ -16,7 +16,7 @@ public class ManagmenetUtilisateur implements ICrud_Utilisateur {
     Scanner scanner = new Scanner(System.in);
     PreparedStatement statement = null;
     @Override
-    public void ajouter() {
+    public boolean ajouter() {
         System.out.println("Entre votre Nom : ");
         String nom = scanner.next();
         System.out.println("Entre votre Fonction : ");
@@ -34,9 +34,10 @@ public class ManagmenetUtilisateur implements ICrud_Utilisateur {
             statement.setString(4, password);
             statement.execute();
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            // throw new RuntimeException(e);
+            return false;
         }
-
+     return true;
     }
 
     @Override
@@ -53,7 +54,6 @@ public class ManagmenetUtilisateur implements ICrud_Utilisateur {
 
     @Override
     public void modifier(int id) {
-
 
         System.out.println("Entre votre Nom : ");
         String nom = scanner.next();
@@ -123,7 +123,7 @@ public class ManagmenetUtilisateur implements ICrud_Utilisateur {
 		con.close();
 		return u;
 		}catch (Exception e) {
-				System.out.print(e);
+				//System.out.print(e);
 			}
 		return null;
 
