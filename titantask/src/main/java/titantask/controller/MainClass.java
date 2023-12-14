@@ -1,6 +1,6 @@
 package titantask.controller;
 
-import titantask.ManagmenetTache;
+import titantask.CrudTache;
 import titantask.ManagmenetUtilisateur;
 import titantask.Utilisateur;
 
@@ -79,7 +79,7 @@ public class MainClass {
     }
 
     static void subMenuUser(Utilisateur utilisateur) {
-        ManagmenetTache managmenetTache = new ManagmenetTache();
+        CrudTache managmenetTache = new CrudTache();
         System.out.println("\u001b[32m============================================================================\u001b[0m");
         System.out.println("\t\t\t\t\t \033[1;34mBienvenue "+utilisateur.getNom()+" dans votre espace personnel\033[0m");
         while (true) {
