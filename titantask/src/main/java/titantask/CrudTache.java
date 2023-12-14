@@ -1,12 +1,9 @@
 package titantask;
 
-import titantask.ConnectionBaseDonne;
 
 import java.sql.Connection;
-import java.sql.DriverManager;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Map;
 import java.util.Scanner;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -109,11 +106,14 @@ public class CrudTache implements ICrudtache{
 
             // Close resources
             statement.close();
+            scanner.close();
             return 1;
         } catch (SQLException e) {
             e.printStackTrace();
+            scanner.close();
             return 0;
         }
+		
 	};
 	public int supprimer(int idUtilisateur) {
         ConnectionBaseDonne connectionBaseDonne = new ConnectionBaseDonne();
@@ -144,9 +144,11 @@ public class CrudTache implements ICrudtache{
 			}else {
 				System.out.print("ce tache n'existe pas");
 			}	
+			scanner.close();
 			return 1;
 		}catch (SQLException e) {
             e.printStackTrace();
+            scanner.close();
             return 0;
         }
 		};
@@ -235,7 +237,7 @@ public class CrudTache implements ICrudtache{
 	
 	            // Execute a query
 	            int resultSet1 = statement.executeUpdate("UPDATE `tache` SET `name`='"+name+"',`description`='"+description+"',`date_de_miseajour`='"+localdate+"',`priorite`='"+priorite+"',`categorie`='"+categorie+"' WHERE name = '"+nameModif+"' and id_utilisateur = '"+idUtilisateur+"'");
-	    		System.out.println("updated tache ");
+	    		System.out.println("updated tache "+resultSet1);
 	            
 	
 	            // Close resources
@@ -245,9 +247,11 @@ public class CrudTache implements ICrudtache{
 			else {
 				System.out.print("ce tache n'existe pas");
 			}
+			scanner.close();
 			return 1;
 		}catch (SQLException e) {
             e.printStackTrace();
+            scanner.close();
             return 0;
         }
 		
@@ -290,10 +294,32 @@ public class CrudTache implements ICrudtache{
 		    return 0;
 		}
 	};
-	public int filtrerCategorie(String nom_Categorie) {
-		return 1;
+	public int filtrerCategorie(String nom_Categorie,int idUtilisateur) {
+		ConnectionBaseDonne connectionBaseDonne = new ConnectionBaseDonne();
+		try (Connection connection = connectionBaseDonne.connectionBD()) {
+		    Statement statement = connection.createStatement();
+		    ResultSet resultSet = statement.executeQuery("select * from tache WHERE id_utilisateur = '"+idUtilisateur+"' and categorie = '"+nom_Categorie+"'");
+		    while (resultSet.next()) {
+		        String name = resultSet.getString("name");
+		        String description = resultSet.getString("description");
+		        String priorite = resultSet.getString("priorite");
+		        String categorie = resultSet.getString("categorie");
+		        String date_de_creation = resultSet.getString("date_de_creation");
+		        String date_de_miseajour = resultSet.getString("date_de_miseajour");
+
+		        System.out.print("name : "+name+" description : "+description+" priorite : "+priorite+" categorie : "+categorie+" date_de_creation : "+date_de_creation+" date_de_miseajour : "+date_de_miseajour+"\n");
+		        
+		    }
+			return 1;		
+		} catch (SQLException e) {
+			e.printStackTrace();
+			return 0;
+		}
 	};
 	public int tri(int choix) {
+		
+		
+		
 		return 1;
 
 	};
@@ -303,7 +329,7 @@ public class CrudTache implements ICrudtache{
 		
 		
 		CrudTache test = new CrudTache();
-		test.afficher(1);
+		test.filtrerCategorie("cat",1);
 		
 	}
 }
