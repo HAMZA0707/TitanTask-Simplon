@@ -20,12 +20,41 @@ import java.time.format.DateTimeFormatter;
 public class CrudTache implements ICrudtache{
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 	Scanner scanner = new Scanner(System.in);
+    ConnectionBaseDonne connectionBaseDonne = new ConnectionBaseDonne();
+    Connection connection = connectionBaseDonne.connectionBD();
+	
 
-	public int ajouter(int idUtilisateur) {
+		public void historique(int idUtilisateur, String methode, String name) {
+			
+	        try{
+	        	Statement statement = connection.createStatement();
+	        
+
+	            LocalDateTime date = LocalDateTime.now();
+	            date.format(formatter);
+	        	
+			    ResultSet resultSet1 = statement.executeQuery("select email from utilisateur where id_utilisateur ='"+idUtilisateur+"'");
+		        String email = "";
+		 		if (resultSet1.next()) {
+		 		    // Move the cursor to the first row (if not already positioned)
+		             email = resultSet1.getString("email");
+		
+		 		    // Now 'email' contains the value from the result set
+		 		    System.out.println("User email: " + email);
+		 		} else {
+		 		    System.out.println("No user found with id: " + idUtilisateur);
+		 		}
+		         Statement statementHistorique = connection.createStatement();
+		         int resultSetCat = statementHistorique.executeUpdate("INSERT INTO `historique`( `email`,`description`, `date`) VALUES ('"+email+"',' a "+methode+" une tache avec l utilisateur "+email+" le nom de ce tache : "+name+" date : "+date+" ','"+date+"')");
+	        }
+	        catch (SQLException e) {
+	            e.printStackTrace();
+	        }
+			}
+		public int ajouter(int idUtilisateur) {
         LocalDateTime localdate = LocalDateTime.now();
         localdate.format(formatter);
 		
-        ConnectionBaseDonne connectionBaseDonne = new ConnectionBaseDonne();
 
 		
 
@@ -41,7 +70,7 @@ public class CrudTache implements ICrudtache{
 
 		System.out.print("liste des categories existantes :\n  ");
 		String categorie = "" ;
-	   try (Connection connection = connectionBaseDonne.connectionBD()) {
+	   try  {
 
             // Create a statement
             Statement statement = connection.createStatement();
@@ -74,7 +103,7 @@ public class CrudTache implements ICrudtache{
 	         		String newcat = scanner.next();
 	                 // Execute a query
 	                 int resultSetCat = statementCat.executeUpdate("INSERT INTO `categorie`( `categorie_nom`) VALUES ('"+newcat+"')");
-	         		System.out.println("add categorie : "+resultSetCat);
+	         		/*System.out.println("add categorie : "+resultSetCat);*/
 	                 
 	         		categorie = newcat ;
 	                 // Close resources
@@ -89,6 +118,7 @@ public class CrudTache implements ICrudtache{
             
             }while(numCategorie>categorieList.size() || numCategorie < 0);
             
+            
             // Close resources
             resultSet.close();
             statement.close();
@@ -101,30 +131,18 @@ public class CrudTache implements ICrudtache{
 		
 		
 		
-		try (Connection connection = connectionBaseDonne.connectionBD()) {
+		try{
 
             // Create a statement
             Statement statement = connection.createStatement();
 
             // Execute a query
             int resultSet = statement.executeUpdate("INSERT INTO `tache`( `name`, `description`, `date_de_creation`, `date_de_miseajour`, `priorite`, `categorie`,`id_utilisateur`) VALUES ('"+name+"','"+description+"','"+localdate+"','"+localdate+"','"+priorite+"','"+categorie+"','"+idUtilisateur+"')");
-    		System.out.println("add tache : "+resultSet);
-            ResultSet resultSet1 = statement.executeQuery("select email from utilisateur where id_utilisateur ='"+idUtilisateur+"'");
-            String email = "";
-    		if (resultSet1.next()) {
-    		    // Move the cursor to the first row (if not already positioned)
-                email = resultSet1.getString("email");
-
-    		    // Now 'email' contains the value from the result set
-    		    System.out.println("User email: " + email);
-    		} else {
-    		    System.out.println("No user found with id: " + idUtilisateur);
-    		}
-            Statement statementHistorique = connection.createStatement();
-            int resultSetCat = statementHistorique.executeUpdate("INSERT INTO `historique`( `email`,`description`) VALUES ('"+email+"',' a ajoute une tache avec l utilisateur "+email+" le nom de ce tache : "+name+" ')");
-
+       
             // Close resources
             statement.close();
+            
+            historique(idUtilisateur, "ajouter",name);
             return 1;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -133,12 +151,11 @@ public class CrudTache implements ICrudtache{
 		
 	};
 	public int supprimer(int idUtilisateur) {
-        ConnectionBaseDonne connectionBaseDonne = new ConnectionBaseDonne();
 
 		
 		System.out.print(" entrez le nom de la tache a supprimer : ");
 		String nameSup = scanner.next();
-		try (Connection connection = connectionBaseDonne.connectionBD()) {
+		try {
 
 	        Statement testStatement = connection.createStatement();
 	
@@ -160,20 +177,7 @@ public class CrudTache implements ICrudtache{
 			}else {
 				System.out.print("ce tache n'existe pas");
 			}	
-			  ResultSet resultSet1 = testStatement.executeQuery("select email from utilisateur where id_utilisateur ='"+idUtilisateur+"'");
-	            String email = "";
-	    		if (resultSet1.next()) {
-	    		    // Move the cursor to the first row (if not already positioned)
-	                email = resultSet1.getString("email");
-
-	    		    // Now 'email' contains the value from the result set
-	    		    System.out.println("User email: " + email);
-	    		} else {
-	    		    System.out.println("No user found with id: " + idUtilisateur);
-	    		}
-	            Statement statementHistorique = connection.createStatement();
-	            int resultSetCat = statementHistorique.executeUpdate("INSERT INTO `historique`( `email`,`description`) VALUES ('"+email+"',' a supprimer une tache avec l utilisateur "+email+" le nom de ce tache : "+nameSup+" ')");
-
+            historique(idUtilisateur, "Supprimer",nameSup);
 			return 1;
 		}catch (SQLException e) {
             e.printStackTrace();
@@ -181,14 +185,13 @@ public class CrudTache implements ICrudtache{
         }
 		};
 	public int modifier(int idUtilisateur) {
-		ConnectionBaseDonne connectionBaseDonne = new ConnectionBaseDonne();
 
 		LocalDateTime localdate = LocalDateTime.now();
         localdate.format(formatter);
 		
 		System.out.print(" entrez le nom de la tache a modifier : ");
 		String nameModif = scanner.next();
-		try (Connection connection = connectionBaseDonne.connectionBD()) {
+		try {
 
 	        Statement testStatement = connection.createStatement();
 	
@@ -264,21 +267,7 @@ public class CrudTache implements ICrudtache{
 	
 	            // Execute a query
 	            int resultSet1 = statement.executeUpdate("UPDATE `tache` SET `name`='"+name+"',`description`='"+description+"',`date_de_miseajour`='"+localdate+"',`priorite`='"+priorite+"',`categorie`='"+categorie+"' WHERE name = '"+nameModif+"' and id_utilisateur = '"+idUtilisateur+"'");
-	    		System.out.println("updated tache "+resultSet1);
-	    		ResultSet resultSet2 = testStatement.executeQuery("select email from utilisateur where id_utilisateur ='"+idUtilisateur+"'");
-	            String email = "";
-	    		if (resultSet2.next()) {
-	    		    // Move the cursor to the first row (if not already positioned)
-	                email = resultSet2.getString("email");
-
-	    		    // Now 'email' contains the value from the result set
-	    		    System.out.println("User email: " + email);
-	    		} else {
-	    		    System.out.println("No user found with id: " + idUtilisateur);
-	    		}
-	            Statement statementHistorique = connection.createStatement();
-	            int resultSetCat = statementHistorique.executeUpdate("INSERT INTO `historique`( `email`,`description`) VALUES ('"+email+"',' a modifie une tache avec l utilisateur "+email+" le nom de ce tache : "+name+" ')");
-
+                historique(idUtilisateur, "modifie",name);
 	
 	            // Close resources
 	            statement.close();
@@ -296,10 +285,8 @@ public class CrudTache implements ICrudtache{
 		
 	};
 	public int afficher(int idUtilisateur) {
-		
-		ConnectionBaseDonne connectionBaseDonne = new ConnectionBaseDonne();
-        
-		try (Connection connection = connectionBaseDonne.connectionBD()) {
+		        
+		try{
 		
 		    // Create a statement
 		    Statement statement = connection.createStatement();
@@ -350,8 +337,7 @@ public class CrudTache implements ICrudtache{
 	
 	public List<Tache> listeDeTaches(int idUser) {
 		List<Tache> ListeCategorie = new ArrayList<>();
-		ConnectionBaseDonne connectionBaseDonne = new ConnectionBaseDonne();
-		try (Connection connection = connectionBaseDonne.connectionBD()) {
+		try{
 		    Statement statement = connection.createStatement();
 		    ResultSet resultSet = statement.executeQuery("select * from tache WHERE id_utilisateur = '"+idUser+"'");
 		    while (resultSet.next()) {
@@ -409,6 +395,6 @@ public class CrudTache implements ICrudtache{
 
 	public static void main(String[] args) {
 		CrudTache test= new CrudTache();
-		test.modifier(1);
+		test.historique(1,"test","test");
 
 }}
