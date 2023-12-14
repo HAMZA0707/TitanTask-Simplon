@@ -9,7 +9,9 @@ public class Tache {
 	private LocalDateTime date_de_creation ;
 	private LocalDateTime date_de_miseajour ;
 	private String priorite ;
-	private Categorie categorie;
+	private String categorie;
+	private int id_utilisateur;
+	
 	
 	
 	
@@ -20,14 +22,16 @@ public class Tache {
 		// TODO Auto-generated constructor stub
 	}
 	public Tache(String name, String description, LocalDateTime date_de_creation, LocalDateTime date_de_miseajour, String priorite,
-			Categorie categorie) {
+			String categorie, int idU) {
 		super();
 		this.name = name;
 		this.description = description;
 		this.date_de_creation = date_de_creation;
 		this.date_de_miseajour = date_de_miseajour;
 		this.priorite = priorite;
-		this.categorie = categorie;
+		this.categorie = categorie;	
+		this.id_utilisateur = idU;
+
 	}
 	public int getId() {
 		return id;
@@ -65,17 +69,17 @@ public class Tache {
 	public void setPriorite(String priorite) {
 		this.priorite = priorite;
 	}
-	public Categorie getCategorie() {
+	public String getCategorie() {
 		return categorie;
 	}
-	public void setCategorie(Categorie categorie) {
+	public void setCategorie(String categorie) {
 		this.categorie = categorie;
 	}
 	
 
 	@Override
 	public String toString() {
-		return "Tache [id=" + id + ", name=" + name + ", description=" + description + ", date_de_creation="
+		return "Tache [ name=" + name + ", description=" + description + ", date_de_creation="
 				+ date_de_creation + ", date_de_miseajour=" + date_de_miseajour + ", priorite=" + priorite
 				+ ", categorie=" + categorie + "]";
 	}
