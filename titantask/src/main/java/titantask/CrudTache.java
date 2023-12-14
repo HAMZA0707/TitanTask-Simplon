@@ -379,7 +379,7 @@ public class CrudTache implements ICrudtache{
 		int choix ;
 		
 		do {
-			System.out.print("tri : par priorite entrez 1 _ par date de creation entrez 2  ");
+			System.out.print("tri : par priorite entrez 1 _ par date de creation entrez 2 ");
 			choix = scanner.nextInt();
 		if(choix == 1) {
 		List<Tache> listTaches = listeDeTaches(idUser);

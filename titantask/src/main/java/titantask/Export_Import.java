@@ -16,8 +16,7 @@ import java.sql.Statement;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
-
-
+import java.io.File;
 public class Export_Import {
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 	ConnectionBaseDonne cn = new ConnectionBaseDonne();
@@ -60,25 +59,33 @@ public class Export_Import {
 		return false;
 	}
 	
-	public boolean import_tache(int id) {
+	public boolean import_tache(int id,String path) {
 		String line;
 		try {
-			BufferedReader bf= new BufferedReader(new FileReader(FilePath));
-			while((line=bf.readLine())!=null) {
-				String [] s=line.split(CSV_SEPARATOR);
-				LocalDateTime localdate = LocalDateTime.now();
-		        localdate.format(formatter);
-				Statement statement = con.createStatement();
-		        statement.executeUpdate("INSERT INTO `tache`( `name`, `description`, `date_de_creation`, `date_de_miseajour`, `priorite`, `categorie`,`id_utilisateur`) VALUES ('"+s[0]+"','"+s[1]+"','"+localdate+"','"+localdate+"','"+s[2]+"','"+s[3]+"','"+id+"')");
-		        String query = "select tache_id from tache where categorie='"+s[3]+"'";
-	            ResultSet resultSet = statement.executeQuery(query);
-	            resultSet.next();
-	            int id_tache=resultSet.getInt("tache_id");
-		        statement.executeUpdate("INSERT INTO `categorie`( `categorie_nom`,`tache_id`) VALUES ('"+s[3]+"','"+id_tache+"')");
-		        statement.close();
+			File f = new File(path);
+			if(f.exists() && !f.isDirectory()) { 
+				BufferedReader bf= new BufferedReader(new FileReader(path));
+				while((line=bf.readLine())!=null) {
+					String [] s=line.split(CSV_SEPARATOR);
+					LocalDateTime localdate = LocalDateTime.now();
+			        localdate.format(formatter);
+					Statement statement = con.createStatement();
+			        statement.executeUpdate("INSERT INTO `tache`( `name`, `description`, `date_de_creation`, `date_de_miseajour`, `priorite`, `categorie`,`id_utilisateur`) VALUES ('"+s[0]+"','"+s[1]+"','"+localdate+"','"+localdate+"','"+s[2]+"','"+s[3]+"','"+id+"')");
+			        String query = "select tache_id from tache where categorie='"+s[3]+"'";
+		            ResultSet resultSet = statement.executeQuery(query);
+		            resultSet.next();
+		            int id_tache=resultSet.getInt("tache_id");
+			        statement.executeUpdate("INSERT INTO `categorie`( `categorie_nom`,`tache_id`) VALUES ('"+s[3]+"','"+id_tache+"')");
+			        statement.close();
+				}
+				bf.close();
+				return true;
 			}
-			bf.close();
-			return true;
+			else {
+				System.out.print("File n'existe pas");
+				return false;
+			}
+			
 		} catch (IOException | SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
