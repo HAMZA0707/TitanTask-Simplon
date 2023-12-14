@@ -23,7 +23,12 @@ public class ManagmenetUtilisateur implements ICrud_Utilisateur {
         System.out.println("Entre votre password : ");
         String password = scanner.next();
         System.out.println("Entre votre role (admin/user) ");
-        boolean role= scanner.nextBoolean();
+        String test=scanner.next();
+        int role=1;
+        if(test.equals("user")) {
+        	role=0;
+        }
+        
 
         // Vérifier si l'utilisateur existe déjà
         try {
@@ -31,7 +36,6 @@ public class ManagmenetUtilisateur implements ICrud_Utilisateur {
              statement = con.prepareStatement(checkQuery);
             statement.setString(1, email);
             ResultSet resultSet = statement.executeQuery();
-
             if (resultSet.next()) {
                 int count = resultSet.getInt(1);
                 if (count > 0) {
@@ -39,14 +43,13 @@ public class ManagmenetUtilisateur implements ICrud_Utilisateur {
                     return false;
                 } else {
                     // Ajouter l'utilisateur
-
                     String insertQuery = "INSERT INTO utilisateur(nom, fonction, email, PASSWORD, role) VALUES (?, ?, ?, ?, ?)";
                     statement = con.prepareCall(insertQuery);
                     statement.setString(1, nom);
                     statement.setString(2, fonction);
                     statement.setString(3, email);
                     statement.setString(4, password);
-                    statement.setBoolean(5, role);
+                    statement.setInt(5, role);
                     statement.execute();
                     System.out.println("Utilisateur ajouté avec succès.");
                     return true;
@@ -61,8 +64,10 @@ public class ManagmenetUtilisateur implements ICrud_Utilisateur {
 
 
     @Override
-    public boolean supprimer(String email) {
+    public boolean supprimer() {
         try{
+        	System.out.println("Entre l'email de l'utilisateur a Supprimer : ");
+            String email = scanner.next();
             String query = "delete from utilisateur where email = ?";
             statement = con.prepareStatement(query);
             statement.setString(1,email);
@@ -74,14 +79,16 @@ public class ManagmenetUtilisateur implements ICrud_Utilisateur {
     }
 
     @Override
-    public boolean modifier(String email) {
-        System.out.println("Entre votre Nom : ");
+    public boolean modifier() {
+    	System.out.println("Entre l'email de l'utilisateur a modifier : ");
+        String email = scanner.next();
+        System.out.println("Entre Nouveau Nom : ");
         String nom = scanner.next();
-        System.out.println("Entre votre Fonction : ");
+        System.out.println("Entre Nouveau Fonction : ");
         String fonction = scanner.next();
-        System.out.println("Entre votre email : ");
+        System.out.println("Entre Nouveau email : ");
         String emaill = scanner.next();
-        System.out.println("Entre votre password : ");
+        System.out.println("Entre Nouveau password : ");
         String password = scanner.next();
         System.out.println("Entre le role admin = true et autre = false : ");
         boolean role = scanner.nextBoolean();
@@ -102,13 +109,15 @@ public class ManagmenetUtilisateur implements ICrud_Utilisateur {
     }
 
     @Override
-    public Utilisateur afficher(String email) {
+    public Utilisateur afficher() {
         Utilisateur utilisateur = null;
+        System.out.println("Entre l'email de l'utilisateur a Afficher : ");
+        String email = scanner.next();
         try{
-            String query = "select * from utilisateur where email = ?";
-            statement = con.prepareCall(query);
-            statement.setString(1,email);
-            ResultSet resultSet = statement.executeQuery();
+        	String checkQuery = "SELECT * FROM utilisateur WHERE email = ?";
+            statement = con.prepareStatement(checkQuery);
+           statement.setString(1, email);
+           ResultSet resultSet = statement.executeQuery();
             while (resultSet.next()){
                 int id_utilisateurs = resultSet.getInt("id_utilisateur");
                 String noms = resultSet.getString("nom");
@@ -116,14 +125,15 @@ public class ManagmenetUtilisateur implements ICrud_Utilisateur {
                 String emails = resultSet.getString("email");
                 String passwords = resultSet.getString("PASSWORD");
                 boolean role = resultSet.getBoolean("role");
+                System.out.print("test");
                 utilisateur=new Utilisateur(noms,fonctions,emails,passwords,id_utilisateurs,role);
             }
-
+            
+            return utilisateur;
 
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
-        return utilisateur;
     }
 
     @Override
@@ -144,7 +154,7 @@ public class ManagmenetUtilisateur implements ICrud_Utilisateur {
 			 u =new Utilisateur(rs.getString("nom"),rs.getString("fonction"),rs.getString("email"),rs.getString("password"),rs.getInt("id_utilisateur"),rs.getBoolean("role"));
 		 }
 		st.close();
-		con.close();
+		//con.close();
 		return u;
 		}catch (Exception e) {
 				System.out.print(e);

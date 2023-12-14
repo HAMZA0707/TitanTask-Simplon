@@ -59,13 +59,13 @@ public class CrudTache implements ICrudtache{
 		
 
 		System.out.print("name : ");
-		String name = scanner.next();
+		String name = scanner.nextLine();
 		
 		System.out.print("description : ");
-		String description = scanner.next();
+		String description = scanner.nextLine();
 		
 		System.out.print("priorite : ");
-		String priorite = scanner.next();
+		String priorite = scanner.nextLine();
 		
 
 		System.out.print("liste des categories existantes :\n  ");
@@ -184,13 +184,13 @@ public class CrudTache implements ICrudtache{
             return 0;
         }
 		};
-	public int modifier(int idUtilisateur) {
+	public int modifier(Utilisateur utilisateur) {
 
 		LocalDateTime localdate = LocalDateTime.now();
         localdate.format(formatter);
 		
-		System.out.print(" entrez le nom de la tache a modifier : ");
-		String nameModif = scanner.next();
+		System.out.println(" entrez le nom de la tache a modifier : ");
+		String nameModif = scanner.nextLine();
 		try {
 
 	        Statement testStatement = connection.createStatement();
@@ -200,15 +200,15 @@ public class CrudTache implements ICrudtache{
 			if(verifTache.next()) {
 			
 				System.out.println("new name : ");
-				String name = scanner.next();
+				String name = scanner.nextLine();
 				
 				System.out.println("new description : ");
-				String description = scanner.next();
+				String description = scanner.nextLine();
 				
 				System.out.println("new priorite : ");
-				String priorite = scanner.next();
+				String priorite = scanner.nextLine();
 				
-				System.out.print("liste des categories existantes :\n  ");
+				System.out.println("liste des categories existantes :\n  ");
 				String categorie = "" ;
 
 		            // Create a statement
@@ -266,8 +266,8 @@ public class CrudTache implements ICrudtache{
 	            Statement statement = connection.createStatement();
 	
 	            // Execute a query
-	            int resultSet1 = statement.executeUpdate("UPDATE `tache` SET `name`='"+name+"',`description`='"+description+"',`date_de_miseajour`='"+localdate+"',`priorite`='"+priorite+"',`categorie`='"+categorie+"' WHERE name = '"+nameModif+"' and id_utilisateur = '"+idUtilisateur+"'");
-                historique(idUtilisateur, "modifie",name);
+	            int resultSet1 = statement.executeUpdate("UPDATE `tache` SET `name`='"+name+"',`description`='"+description+"',`date_de_miseajour`='"+localdate+"',`priorite`='"+priorite+"',`categorie`='"+categorie+"' WHERE name = '"+nameModif+"' and id_utilisateur = '"+utilisateur.getId()+"'");
+                historique(utilisateur.getId(), "modifie",name);
 	
 	            // Close resources
 	            statement.close();
@@ -284,7 +284,7 @@ public class CrudTache implements ICrudtache{
         }
 		
 	};
-	public int afficher(int idUtilisateur) {
+	public int afficher(Utilisateur utilisateur) {
 		        
 		try{
 		
@@ -292,8 +292,10 @@ public class CrudTache implements ICrudtache{
 		    Statement statement = connection.createStatement();
 		
 		    // Execute a query
-		    ResultSet resultSet = statement.executeQuery("select * from tache WHERE id_utilisateur = '"+idUtilisateur+"' ");
-		
+		    //ResultSet resultSet = statement.executeQuery("select * from tache WHERE id_utilisateur = '"+idUtilisateur+"' ");
+		    ResultSet resultSet = statement.executeQuery("SELECT * FROM tache,affictation WHERE tache.id_utilisateur='"+utilisateur.getId()+"' OR(tache.tache_id=affictation.tache_id AND affictation.email='"+utilisateur.getEmail()+"');");
+		    
+
 		    // Process the results
 		    while (resultSet.next()) {
 		        // Retrieve data using resultSet.getString() methods
@@ -391,10 +393,4 @@ public class CrudTache implements ICrudtache{
 		return 1;
 	}
 	
-	
-
-	public static void main(String[] args) {
-		CrudTache test= new CrudTache();
-		test.historique(1,"test","test");
-
-}}
+}

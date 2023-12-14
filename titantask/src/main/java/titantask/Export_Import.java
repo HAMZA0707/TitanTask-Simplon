@@ -23,7 +23,7 @@ public class Export_Import {
     Connection con = cn.connectionBD();
     Scanner scanner = new Scanner(System.in);
     PreparedStatement statement = null;
-    private String FilePath="tache.csv";
+    private String FilePath="C:\\Users\\21260\\Desktop\\Taches.csv";
 	BufferedWriter bw;
 	String CSV_SEPARATOR=",";
 	
