@@ -5,8 +5,8 @@ import java.util.List;
 public interface ICrud_Utilisateur {
 	
 	public boolean ajouter();
-	public boolean supprimer(int id);
-	public boolean modifier(int id);
-	public Utilisateur afficher(int id);
+	public boolean supprimer(String email);
+	public boolean modifier(String email);
+	public Utilisateur afficher(String email);
 	public Utilisateur login();
 }
