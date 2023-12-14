@@ -364,10 +364,10 @@ public class CrudTache implements ICrudtache{
 	
 	@Override
 	public int tri(int idUser) {
-		int choix ;
+		int choix =0;
 		
 		do {
-			System.out.print("tri : par priorite entrez 1 _ par date de creation entrez 2 ");
+			System.out.print("tri : par priorite entrez 1 _ par date de creation entrez 2 pour quitter entrez 0");
 			choix = scanner.nextInt();
 		if(choix == 1) {
 		List<Tache> listTaches = listeDeTaches(idUser);
@@ -388,7 +388,7 @@ public class CrudTache implements ICrudtache{
 				System.out.println("tache pour priorite : "+date+" : "+listetaches)
 			);
 		}
-		}while (choix !=1 || choix != 2);
+		}while (choix !=0);
 		
 		return 1;
 	}

@@ -98,9 +98,11 @@ public class MainClass {
             System.out.println("2. Modifier une tache");
             System.out.println("3. Afficher list des taches");
             System.out.println("4. Supprimer une tache");
-            System.out.println("5.Exporter vos taches");
-            System.out.println("6.Importer list des taches");
-            System.out.println("7. Deconnection");
+            System.out.println("5. Filter les taches par categorie");
+            System.out.println("6. Trier les Taches par priorite ou date creation");
+            System.out.println("7.Exporter vos taches");
+            System.out.println("8.Importer list des taches");
+            System.out.println("9. Deconnection");
             System.out.print("Entrez le numéro de votre choix: ");
             try {
                 Scanner scanner = new Scanner(System.in);
@@ -122,19 +124,25 @@ public class MainClass {
                         managmenetTache.supprimer(utilisateur.getId());
                         break;
                     case 5:
+                    	managmenetTache.filtrerCategorie(utilisateur.getId());
+                    	break;
+					case 6:
+                    	managmenetTache.tri(utilisateur.getId());
+                    	break;
+                    case 7:
                     	if (ei.export_Tache(utilisateur.getId())){
                             System.out.println("Export reussi");
                         }else
                             System.out.println("Echec Export");
                         break;
-					case 6:
+					case 8:
 					    
 					    if (ei.import_tache(utilisateur.getId(), "C:\\Users\\21260\\Desktop\\Taches.csv")){
 					        System.out.println("Import reussi");
 					    }else
 					        System.out.println("Echec Import");
 					    break;
-                    case 7:
+                    case 9:
                     	return 1;
                         //scanner.close();
                         //System.exit(0);
@@ -159,10 +167,12 @@ public class MainClass {
             System.out.println("2. Modifier une tache");
             System.out.println("3. Afficher Afficher list des taches");
             System.out.println("4. Supprimer liste des taches");
-            System.out.println("5.Affecter une tache");
-            System.out.println("6.Exporter vos taches");
-            System.out.println("7.Importer list des taches");
-            System.out.println("8. Deconnection");
+            System.out.println("5. Filter les taches par categorie");
+            System.out.println("6. Trier les Taches par priorite ou date creation");
+            System.out.println("7. Affecter une tache");
+            System.out.println("8. Exporter vos taches");
+            System.out.println("9. Importer list des taches");
+            System.out.println("10.Deconnection");
             System.out.print("Entrez le numéro de votre choix: ");
             try {
                 Scanner scanner = new Scanner(System.in);
@@ -184,27 +194,33 @@ public class MainClass {
                         managmenetTache.supprimer(utilisateur.getId());
                         break;
                     case 5:
+                    	managmenetTache.filtrerCategorie(utilisateur.getId());
+                    	break;
+					case 6:
+                    	managmenetTache.tri(utilisateur.getId());
+                    	break;
+                    case 7:
                         
                         if (at.affecterTache() == 1){
                             System.out.println("Tache  Affecter");
                         }else
                             System.out.println("Tache pas affecter");
                         break;
-                    case 6:
+                    case 8:
                         
                         if (ei.export_Tache(utilisateur.getId())){
                             System.out.println("Export reussi");
                         }else
                             System.out.println("Echec Export");
                         break;
-					case 7:
+					case 9:
 					    
 					    if (ei.import_tache(inputChoix, "C:\\Users\\21260\\Desktop\\Taches.csv")){
 					        System.out.println("Import reussi");
 					    }else
 					        System.out.println("Echec Import");
 					    break;
-                    case 8:
+                    case 10:
                         scanner.close();
                         System.exit(0);
                     default:
