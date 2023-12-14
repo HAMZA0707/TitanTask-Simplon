@@ -8,17 +8,23 @@ public class Utilisateur {
     private String email;
     private String password;
     private int id ;
+    private boolean role;
 
-    public Utilisateur(String nom, String fonction, String email, String password, int id) {
+    public Utilisateur(String nom, String fonction, String email, String password, int id, boolean role) {
         this.nom = nom;
         this.fonction = fonction;
         this.email = email;
         this.password = password;
         this.id = id;
+        this.role = role;
     }
 
-    public Utilisateur() {
-        super();
+    public boolean isRole() {
+        return role;
+    }
+
+    public void setRole(boolean role) {
+        this.role = role;
     }
 
     public int getId() {
@@ -69,6 +75,8 @@ public class Utilisateur {
                 ", email='" + email + '\'' +
                 ", password='" + password + '\'' +
                 ", id=" + id +
+                ", role='" + role + '\'' +
+
                 '}';
     }
 }
