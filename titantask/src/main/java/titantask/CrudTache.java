@@ -5,6 +5,7 @@ import java.util.Map;
 import java.sql.Connection;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Scanner;
 import java.util.stream.Collectors;
@@ -266,4 +267,38 @@ public class CrudTache implements ICrudtache{
 		}while (choix !=0);
 		return 1;
 	}
+	
+	/*Afficher list historique*/
+	public int afficherHistorique() {
+        
+		try{
+			
+		    // Create a statement
+		    Statement statement = connection.createStatement();
+		
+		    // Execute a query
+		    ResultSet resultSet = statement.executeQuery("SELECT * FROM `historique` ");
+		    
+		    // Process the results
+		    while (resultSet.next()) {
+		        // Retrieve data using resultSet.getString() methods
+				int id = resultSet.getInt("id");
+		        String email = resultSet.getString("email");
+		        String description = resultSet.getString("description");
+		        Date date = resultSet.getDate("date");
+		        System.out.print("email : "+email+" description : "+description+" date : "+date+"\n");
+		        
+		    }
+		    // Close resources
+		    resultSet.close();
+		    statement.close();
+		    
+		    return 1;
+
+		
+		} catch (SQLException e) {
+		    e.printStackTrace();
+		    return 0;
+		}
+	};
 }

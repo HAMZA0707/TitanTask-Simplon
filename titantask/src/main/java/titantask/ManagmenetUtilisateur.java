@@ -67,8 +67,12 @@ public class ManagmenetUtilisateur implements ICrud_Utilisateur {
         try{
         	System.out.println("Entre l'email de l'utilisateur a Supprimer : ");
             String email = scanner.next();
-            String query = "delete from utilisateur where email = ?";
+            String query = "delete from tache where id_utilisateur IN (select id_utilisateur from utilisateur where email = ?)";
             statement = con.prepareStatement(query);
+            statement.setString(1,email);
+            statement.execute();
+            String query1 = "delete from utilisateur where email = ?";
+            statement = con.prepareStatement(query1);
             statement.setString(1,email);
             statement.execute();
             return true;

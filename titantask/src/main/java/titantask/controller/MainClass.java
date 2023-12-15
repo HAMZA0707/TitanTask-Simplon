@@ -109,7 +109,7 @@ public class MainClass {
                 int inputChoix = scanner.nextInt();
                 switch (inputChoix) {
                     case 1:
-                        if (managmenetTache.ajouter(utilisateur.getId()) == 1){
+                        if (managmenetTache.ajouter(utilisateur) == 1){
                             System.out.println("ajout success");
                         }else
                             System.out.println("ajout refusee");
@@ -121,13 +121,13 @@ public class MainClass {
                         managmenetTache.afficher(utilisateur);
                         break;
                     case 4:
-                        managmenetTache.supprimer(utilisateur.getId());
+                        managmenetTache.supprimer(utilisateur);
                         break;
                     case 5:
-                    	managmenetTache.filtrerCategorie(utilisateur.getId());
+                    	managmenetTache.filtrerCategorie(utilisateur);
                     	break;
 					case 6:
-                    	managmenetTache.tri(utilisateur.getId());
+                    	managmenetTache.tri(utilisateur);
                     	break;
                     case 7:
                     	if (ei.export_Tache(utilisateur.getId())){
@@ -172,14 +172,15 @@ public class MainClass {
             System.out.println("7. Affecter une tache");
             System.out.println("8. Exporter vos taches");
             System.out.println("9. Importer list des taches");
-            System.out.println("10. Deconnection");
+            System.out.println("10. Afficher Historique des operations des utilisateurs");
+            System.out.println("11. Deconnection");
             System.out.print("Entrez le numéro de votre choix: ");
             try {
                 Scanner scanner = new Scanner(System.in);
                 int inputChoix = scanner.nextInt();
                 switch (inputChoix) {
                     case 1:
-                        if (managmenetTache.ajouter(utilisateur.getId()) == 1){
+                        if (managmenetTache.ajouter(utilisateur) == 1){
                             System.out.println("ajout success");
                         }else
                             System.out.println("ajout refusee");
@@ -191,36 +192,36 @@ public class MainClass {
                         managmenetTache.afficher(utilisateur);
                         break;
                     case 4:
-                        managmenetTache.supprimer(utilisateur.getId());
+                        managmenetTache.supprimer(utilisateur);
                         break;
                     case 5:
-                    	managmenetTache.filtrerCategorie(utilisateur.getId());
+                    	managmenetTache.filtrerCategorie(utilisateur);
                     	break;
 					case 6:
-                    	managmenetTache.tri(utilisateur.getId());
+                    	managmenetTache.tri(utilisateur);
                     	break;
-                    case 7:
-                        
+                    case 7:  
                         if (at.affecterTache() == 1){
                             System.out.println("Tache  Affecter");
                         }else
                             System.out.println("Tache pas affecter");
                         break;
                     case 8:
-                        
                         if (ei.export_Tache(utilisateur.getId())){
                             System.out.println("Export reussi");
                         }else
                             System.out.println("Echec Export");
                         break;
 					case 9:
-					    
 					    if (ei.import_tache(inputChoix)){
 					        System.out.println("Import reussi");
 					    }else
 					        System.out.println("Echec Import");
 					    break;
-                    case 10:
+					case 10:
+                        managmenetTache.afficherHistorique();
+                        break;
+                    case 11:
                         //scanner.close();
                         //System.exit(0);
                     	return 1;

@@ -21,15 +21,16 @@ import javax.swing.filechooser.FileSystemView;
 
 import java.io.File;
 public class Export_Import {
+	//Class pour Export/Import de la liste des tâches au format CSV 
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 	ConnectionBaseDonne cn = new ConnectionBaseDonne();
     Connection con = cn.connectionBD();
     Scanner scanner = new Scanner(System.in);
     PreparedStatement statement = null;
-    private String FilePath="C:\\Users\\21260\\Desktop\\Taches.csv";
 	BufferedWriter bw;
 	String CSV_SEPARATOR=",";
 	
+	//Methode pour exporter les taches de l'utilisateur
 	public boolean export_Tache(int id) {
 		try{
 			FileSystemView view = FileSystemView.getFileSystemView(); 
@@ -68,6 +69,7 @@ public class Export_Import {
 		return false;
 	}
 	
+	//Methode pour importer les taches de l'utilisateur
 	public boolean import_tache(int id) {
 		String line;
 		try {
