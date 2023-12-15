@@ -16,6 +16,9 @@ import java.sql.Statement;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.Scanner;
+
+import javax.swing.filechooser.FileSystemView;
+
 import java.io.File;
 public class Export_Import {
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
@@ -29,11 +32,17 @@ public class Export_Import {
 	
 	public boolean export_Tache(int id) {
 		try{
+			FileSystemView view = FileSystemView.getFileSystemView(); 
+			File file = view.getHomeDirectory(); 
+			String desktop = file.getPath(); 
+			File ob = new File(desktop + File.separator + "Tache" + ".csv");
+			//System.out.println(ob);
+			
             String query = "select * from tache where id_utilisateur = ?";
             statement = con.prepareCall(query);
             statement.setInt(1,id);
             ResultSet resultSet = statement.executeQuery();
-            bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(FilePath), "UTF-8"));
+            bw = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(ob), "UTF-8"));
             while (resultSet.next()){
                 StringBuffer oneLine = new StringBuffer();
                 oneLine.append(resultSet.getString("name"));
@@ -59,12 +68,16 @@ public class Export_Import {
 		return false;
 	}
 	
-	public boolean import_tache(int id,String path) {
+	public boolean import_tache(int id) {
 		String line;
 		try {
-			File f = new File(path);
+			FileSystemView view = FileSystemView.getFileSystemView(); 
+			File file = view.getHomeDirectory();
+			String desktop = file.getPath(); 
+			File ob = new File(desktop + File.separator + "Tache" + ".csv");
+			File f = new File(ob.toString());
 			if(f.exists() && !f.isDirectory()) { 
-				BufferedReader bf= new BufferedReader(new FileReader(path));
+				BufferedReader bf= new BufferedReader(new FileReader(ob.toString()));
 				while((line=bf.readLine())!=null) {
 					String [] s=line.split(CSV_SEPARATOR);
 					LocalDateTime localdate = LocalDateTime.now();

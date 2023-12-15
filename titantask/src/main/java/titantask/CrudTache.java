@@ -267,7 +267,7 @@ public class CrudTache implements ICrudtache{
 		
 		    // Execute a query
 		    //ResultSet resultSet = statement.executeQuery("select * from tache WHERE id_utilisateur = '"+idUtilisateur+"' ");
-		    ResultSet resultSet = statement.executeQuery("SELECT * FROM tache,affictation WHERE tache.id_utilisateur='"+utilisateur.getId()+"' OR(tache.tache_id=affictation.tache_id AND affictation.email='"+utilisateur.getEmail()+"');");
+		    ResultSet resultSet = statement.executeQuery("SELECT * FROM `tache` WHERE id_utilisateur='"+utilisateur.getId()+"' or tache_id IN (SELECT tache_id from affictation WHERE email='"+utilisateur.getEmail()+"');");
 		    
 
 		    // Process the results

@@ -154,7 +154,6 @@ public class ManagmenetUtilisateur implements ICrud_Utilisateur {
 			 u =new Utilisateur(rs.getString("nom"),rs.getString("fonction"),rs.getString("email"),rs.getString("password"),rs.getInt("id_utilisateur"),rs.getBoolean("role"));
 		 }
 		st.close();
-		//con.close();
 		return u;
 		}catch (Exception e) {
 				System.out.print(e);
