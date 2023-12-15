@@ -1,4 +1,4 @@
-package titantask;
+package titantask.services;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -20,7 +20,7 @@ import java.util.Scanner;
 import javax.swing.filechooser.FileSystemView;
 
 import java.io.File;
-public class Export_Import {
+public class ExportImport {
 	//Class pour Export/Import de la liste des tâches au format CSV 
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 	ConnectionBaseDonne cn = new ConnectionBaseDonne();

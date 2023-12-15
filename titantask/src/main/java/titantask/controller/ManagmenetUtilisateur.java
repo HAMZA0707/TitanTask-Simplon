@@ -1,4 +1,8 @@
-package titantask;
+package titantask.controller;
+
+import titantask.services.ICrudUtilisateur;
+import titantask.model.Utilisateur;
+import titantask.services.ConnectionBaseDonne;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -7,7 +11,7 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.Scanner;
 
-public class ManagmenetUtilisateur implements ICrud_Utilisateur {
+public class ManagmenetUtilisateur implements ICrudUtilisateur {
     ConnectionBaseDonne cn = new ConnectionBaseDonne();
     Connection con = cn.connectionBD();
     Scanner scanner = new Scanner(System.in);

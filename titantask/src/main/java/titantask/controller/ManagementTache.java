@@ -1,4 +1,4 @@
-package titantask;
+package titantask.controller;
 
 import java.util.List;
 import java.util.Map;
@@ -6,16 +6,21 @@ import java.sql.Connection;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Scanner;
 import java.util.stream.Collectors;
-import com.google.protobuf.Timestamp;
+
+import titantask.services.Priorite;
+import titantask.services.ConnectionBaseDonne;
+import titantask.model.Tache;
+import titantask.model.Utilisateur;
+import titantask.services.ICrudtache;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
-public class CrudTache implements ICrudtache{
+public class ManagementTache implements ICrudtache {
     private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 	Scanner scanner = new Scanner(System.in);
     ConnectionBaseDonne connectionBaseDonne = new ConnectionBaseDonne();

@@ -1,4 +1,4 @@
-package titantask;
+package titantask.model;
 
 
 public class Utilisateur {

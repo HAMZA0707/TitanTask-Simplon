@@ -1,4 +1,6 @@
-package titantask;
+package titantask.model;
+
+import titantask.services.Priorite;
 
 import java.time.LocalDateTime;
 

@@ -1,8 +1,8 @@
-package titantask;
+package titantask.services;
 
-import java.util.List;
+import titantask.model.Utilisateur;
 
-public interface ICrud_Utilisateur {
+public interface ICrudUtilisateur {
 	
 	public boolean ajouter();
 	public boolean supprimer();

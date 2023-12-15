@@ -1,4 +1,7 @@
-package titantask;
+package titantask.model;
+
+import titantask.services.ConnectionBaseDonne;
+
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;

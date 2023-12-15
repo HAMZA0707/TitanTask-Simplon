@@ -1,4 +1,6 @@
-package titantask;
+package titantask.services;
+
+import titantask.model.Utilisateur;
 
 public interface ICrudtache {
 	
