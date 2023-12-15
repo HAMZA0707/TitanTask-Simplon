@@ -23,8 +23,34 @@ public class CrudTache implements ICrudtache{
     ConnectionBaseDonne connectionBaseDonne = new ConnectionBaseDonne();
     Connection connection = connectionBaseDonne.connectionBD();
 	
+    public Priorite priorite() {
+    	Priorite priorite = null;
+        while (priorite == null) {
+            System.out.println("Choisir une priorite en tapant son numero : ");
+            System.out.println("1 - HAUTE ");
+            System.out.println("2 - MOYENNE ");
+            System.out.println("3 - BASSE ");
+            int choose = scanner.nextInt();
+          switch(choose) {
+          case 1:
+            priorite = Priorite.HAUTE;
+            break;
+          case 2:
+              priorite = Priorite.MOYENNE;
+            break;
+          case 3:
+              priorite = Priorite.BASSE;
+            break;
+            default: 
+                System.out.println("Choix invalide. Utilisez les numéros 1, 2 ou 3.");
+                
+        }
+          
+        }
+        return priorite;
+    }
 
-		public void historique(int idUtilisateur, String methode, String name) {
+	public void historique(int idUtilisateur, String methode, String name) {
 			
 	        try{
 	        	Statement statement = connection.createStatement();
@@ -51,23 +77,8 @@ public class CrudTache implements ICrudtache{
 	            e.printStackTrace();
 	        }
 			}
-		public int ajouter(int idUtilisateur) {
-        LocalDateTime localdate = LocalDateTime.now();
-        localdate.format(formatter);
-		
-
-		
-
-		System.out.print("name : ");
-		String name = scanner.nextLine();
-		
-		System.out.print("description : ");
-		String description = scanner.nextLine();
-		
-		System.out.print("priorite {haute - moyenne - basse}: ");
-		String priorite = scanner.nextLine();
-		
-
+	
+	public String categorie() {
 		System.out.print("liste des categories existantes :\n  ");
 		String categorie = "" ;
 	   try  {
@@ -127,9 +138,23 @@ public class CrudTache implements ICrudtache{
             e.printStackTrace();
            
         }
-    
+	   return categorie;
+	}
 		
 		
+	public int ajouter(int idUtilisateur) {
+        LocalDateTime localdate = LocalDateTime.now();
+        localdate.format(formatter);
+
+		System.out.print("name : ");
+		String name = scanner.nextLine();
+		
+		System.out.print("description : ");
+		String description = scanner.nextLine();
+		
+		Priorite priorite = priorite();
+		
+		String categorie = categorie();
 		
 		try{
 
@@ -150,6 +175,8 @@ public class CrudTache implements ICrudtache{
         }
 		
 	};
+	
+	
 	public int supprimer(int idUtilisateur) {
 
 		
@@ -205,68 +232,15 @@ public class CrudTache implements ICrudtache{
 				System.out.println("new description : ");
 				String description = scanner.nextLine();
 				
-				System.out.println("new priorite {haute - moyenne - basse}: ");
-				String priorite = scanner.nextLine();
+				Priorite priorite = priorite();
 				
-				System.out.println("liste des categories existantes :\n  ");
-				String categorie = "" ;
-
-		            // Create a statement
-		            Statement statementListCat = connection.createStatement();
-
-		            // Execute a query
-		            ResultSet resultSet = statementListCat.executeQuery("select * from categorie");
-
-		            ArrayList<String> categorieList = new ArrayList<>() ;
-		            // Process the results
-		            int i=1;
-		            while (resultSet.next()) {
-		                // Retrieve data using resultSet.getString() methods
-		                String column = resultSet.getString("categorie_nom");
-		                // categories list :
-		                System.out.println(i+" - "+column);
-		                i++;
-		                //add to list
-		                categorieList.add(column);
-		            }
-		            int numCategorie;
-		            do {
-		            	System.out.println("entrez le numero de la categorie ou tappez 0 pour ajoutez une : ");
-		                
-		                numCategorie = scanner.nextInt();
-		                
-			            if (numCategorie == 0) {
-			            	Statement statementCat = connection.createStatement();
-			
-			         		System.out.print("new categorie : ");
-			         		String newcat = scanner.next();
-			                 // Execute a query
-			                 int resultSetCat = statementCat.executeUpdate("INSERT INTO `categorie`( `categorie_nom`) VALUES ('"+newcat+"')");
-			         		System.out.println("add categorie : "+resultSetCat);
-			                 
-			         		categorie = newcat ;
-			                 // Close resources
-			         		statementCat.close();
-			            }
-			            else if(numCategorie<=categorieList.size()) {
-			                categorie =  categorieList.get(numCategorie-1);
-			            }
-			            else {
-			                System.out.println("not exist categorie");
-			            }
-		            
-		            }while(numCategorie>categorieList.size() || numCategorie < 0);
-		            
-		            // Close resources
-		            resultSet.close();
-		            statementListCat.close();
-				
+				String categorie = categorie();		          
 	
 	            // Create a statement
 	            Statement statement = connection.createStatement();
 	
 	            // Execute a query
-	            int resultSet1 = statement.executeUpdate("UPDATE `tache` SET `name`='"+name+"',`description`='"+description+"',`date_de_miseajour`='"+localdate+"',`priorite`='"+priorite+"',`categorie`='"+categorie+"' WHERE name = '"+nameModif+"' and id_utilisateur = '"+utilisateur.getId()+"'");
+	            int resultSet = statement.executeUpdate("UPDATE `tache` SET `name`='"+name+"',`description`='"+description+"',`date_de_miseajour`='"+localdate+"',`priorite`='"+priorite+"',`categorie`='"+categorie+"' WHERE name = '"+nameModif+"' and id_utilisateur = '"+utilisateur.getId()+"'");
                 historique(utilisateur.getId(), "modifie",name);
 	
 	            // Close resources
@@ -350,7 +324,7 @@ public class CrudTache implements ICrudtache{
 		        LocalDateTime date_de_creation = resultSet.getTimestamp("date_de_creation").toLocalDateTime();
 		        LocalDateTime date_de_miseajour = resultSet.getTimestamp("date_de_miseajour").toLocalDateTime();
 
-		        Tache tache   = new Tache(name, description,date_de_creation,date_de_miseajour , priorite,categorie,idUser );
+		        Tache tache  = new Tache(name, description,date_de_creation,date_de_miseajour , Priorite.valueOf(priorite),categorie,idUser );
 		        ListeCategorie.add(tache);
 		        
 		    }
@@ -372,7 +346,7 @@ public class CrudTache implements ICrudtache{
 		if(choix == 1) {
 		List<Tache> listTaches = listeDeTaches(idUser);
 		
-		Map<String, List<Tache>> mapPrioriteTache = listTaches.stream().collect(Collectors.groupingBy(Tache::getPriorite));
+		Map<Priorite, List<Tache>> mapPrioriteTache = listTaches.stream().collect(Collectors.groupingBy(Tache::getPriorite));
 		
 		mapPrioriteTache.forEach((priorite1 , listetaches)->
 			System.out.println("tache pour priorite : "+priorite1+" : "+listetaches)

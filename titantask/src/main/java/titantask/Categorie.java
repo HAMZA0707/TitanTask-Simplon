@@ -8,7 +8,9 @@ import java.util.Scanner;
 public class Categorie {
 	private int id;
 	private String name;
-		
+	Scanner scanner = new Scanner(System.in);
+	ConnectionBaseDonne connectionBaseDonne = new ConnectionBaseDonne();
+	Connection connection = connectionBaseDonne.connectionBD();
 	
 	public int getId() {
 		return id;
@@ -33,10 +35,8 @@ public class Categorie {
 	
 	
 	public int ajouterCategorie(){
-		Scanner scanner = new Scanner(System.in);
-		ConnectionBaseDonne connectionBaseDonne = new ConnectionBaseDonne();
     
-		try (Connection connection = connectionBaseDonne.connectionBD()) {
+		try {
 
 	        // Create a statement
 	        Statement statementCat = connection.createStatement();
@@ -49,24 +49,19 @@ public class Categorie {
              
              // Close resources
      		statementCat.close();
-     		scanner.close();
      		return 1;
 	    } catch (SQLException e) {
 	        e.printStackTrace();
-     		scanner.close();
 	        return 0;
 	       
 	    }
     };
     
 	public int supprimerCategorie() {
-        ConnectionBaseDonne connectionBaseDonne = new ConnectionBaseDonne();
-
-		Scanner scanner = new Scanner(System.in);
-		
+        
 		System.out.print(" entrez le nom de la Categorie a supprimer : ");
 		String categirieSup = scanner.next();
-		try (Connection connection = connectionBaseDonne.connectionBD()) {
+		try {
 
 	        Statement testStatement = connection.createStatement();
 	
@@ -87,11 +82,9 @@ public class Categorie {
 			}else {
 				System.out.print("cette categorie n'existe pas");
 			}	
-     		scanner.close();
 			return 1;
 		}catch (SQLException e) {
             e.printStackTrace();
-     		scanner.close();
             return 0;
         }
 		};

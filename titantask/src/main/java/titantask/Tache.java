@@ -8,7 +8,7 @@ public class Tache {
 	private String description ;
 	private LocalDateTime date_de_creation ;
 	private LocalDateTime date_de_miseajour ;
-	private String priorite ;
+	private Priorite priorite ;
 	private String categorie;
 	private int id_utilisateur;
 	
@@ -21,7 +21,7 @@ public class Tache {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	public Tache(String name, String description, LocalDateTime date_de_creation, LocalDateTime date_de_miseajour, String priorite,
+	public Tache(String name, String description, LocalDateTime date_de_creation, LocalDateTime date_de_miseajour, Priorite priorite,
 			String categorie, int idU) {
 		super();
 		this.name = name;
@@ -63,10 +63,10 @@ public class Tache {
 	public void setDate_de_miseajour(LocalDateTime date_de_miseajour) {
 		this.date_de_miseajour = date_de_miseajour;
 	}
-	public String getPriorite() {
+	public Priorite getPriorite() {
 		return priorite;
 	}
-	public void setPriorite(String priorite) {
+	public void setPriorite(Priorite priorite) {
 		this.priorite = priorite;
 	}
 	public String getCategorie() {

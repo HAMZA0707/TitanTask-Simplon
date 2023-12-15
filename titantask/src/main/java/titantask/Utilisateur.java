@@ -3,7 +3,11 @@ package titantask;
 
 public class Utilisateur {
 
-    private String nom;
+    public Utilisateur() {
+		super();
+	}
+
+	private String nom;
     private String fonction;
     private String email;
     private String password;
