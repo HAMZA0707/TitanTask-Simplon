@@ -286,7 +286,7 @@ public class CrudTache implements ICrudtache{
 		        String email = resultSet.getString("email");
 		        String description = resultSet.getString("description");
 		        Date date = resultSet.getDate("date");
-		        System.out.print("email : "+email+" description : "+description+" date : "+date+"\n");
+		        System.out.println("description : "+description);
 		        
 		    }
 		    // Close resources
