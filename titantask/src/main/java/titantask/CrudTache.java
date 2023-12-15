@@ -272,16 +272,9 @@ public class CrudTache implements ICrudtache{
 
 		    // Process the results
 		    while (resultSet.next()) {
-		        // Retrieve data using resultSet.getString() methods
-		        String name = resultSet.getString("name");
-		        String description = resultSet.getString("description");
-		        String priorite = resultSet.getString("priorite");
-		        String categorie = resultSet.getString("categorie");
-		        String date_de_creation = resultSet.getString("date_de_creation");
-		        String date_de_miseajour = resultSet.getString("date_de_miseajour");
 
 		        // categories list :
-		        System.out.print("name : "+name+" description : "+description+" priorite : "+priorite+" categorie : "+categorie+" date_de_creation : "+date_de_creation+" date_de_miseajour : "+date_de_miseajour+"\n");
+		        System.out.print("name : "+resultSet.getString("name")+" description : "+resultSet.getString("description")+" priorite : "+resultSet.getString("priorite")+" categorie : "+resultSet.getString("categorie")+" date_de_creation : "+resultSet.getString("date_de_creation")+" date_de_miseajour : "+ resultSet.getString("date_de_miseajour")+"\n");
 		        
 		    }
 		    // Close resources
@@ -302,11 +295,15 @@ public class CrudTache implements ICrudtache{
 		String nom_Categorie = scanner.next();
 		List<Tache> listTaches = listeDeTaches(idUser);
 		
-		Map<String, List<Tache>> mapCategorieTache = listTaches.stream().filter(c ->c.getCategorie().equals(nom_Categorie)).collect(Collectors.groupingBy(Tache::getCategorie));
+		/*Map<String, List<Tache>> mapCategorieTache = listTaches.stream().filter(c ->c.getCategorie().equals(nom_Categorie)).collect(Collectors.groupingBy(Tache::getCategorie));
 		
 		mapCategorieTache.forEach((categorie , listetaches)->
 			System.out.println("tache pour categorie : "+categorie+" : "+listetaches)
-		);
+		);*/
+		List<Tache> listTacheParCategorieX = listTaches.stream().filter(c ->c.getCategorie().equals(nom_Categorie)).collect(Collectors.toList());
+        // Afficher les Tache de la liste(Application de la methode de reference )
+        System.out.println("Liste des taches par categorie :"+nom_Categorie);
+        listTacheParCategorieX.forEach(System.out::println);
 		return 1;
 
 	};
@@ -317,14 +314,7 @@ public class CrudTache implements ICrudtache{
 		    Statement statement = connection.createStatement();
 		    ResultSet resultSet = statement.executeQuery("select * from tache WHERE id_utilisateur = '"+idUser+"'");
 		    while (resultSet.next()) {
-		        String name = resultSet.getString("name");
-		        String description = resultSet.getString("description");
-		        String priorite = resultSet.getString("priorite");
-		        String categorie = resultSet.getString("categorie");
-		        LocalDateTime date_de_creation = resultSet.getTimestamp("date_de_creation").toLocalDateTime();
-		        LocalDateTime date_de_miseajour = resultSet.getTimestamp("date_de_miseajour").toLocalDateTime();
-
-		        Tache tache  = new Tache(name, description,date_de_creation,date_de_miseajour , Priorite.valueOf(priorite),categorie,idUser );
+		        Tache tache  = new Tache(resultSet.getString("name"), resultSet.getString("description"),resultSet.getTimestamp("date_de_creation").toLocalDateTime(),resultSet.getTimestamp("date_de_miseajour").toLocalDateTime() , Priorite.valueOf(resultSet.getString("priorite")),resultSet.getString("categorie"),idUser );
 		        ListeCategorie.add(tache);
 		        
 		    }
@@ -366,5 +356,11 @@ public class CrudTache implements ICrudtache{
 		
 		return 1;
 	}
+	
+
+    public static void main(String[] args) {
+    	CrudTache test = new CrudTache();
+    	test.filtrerCategorie(1);
+    }
 	
 }
