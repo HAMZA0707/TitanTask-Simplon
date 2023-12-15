@@ -10,12 +10,7 @@ public class Tache {
 	private LocalDateTime date_de_miseajour ;
 	private Priorite priorite ;
 	private String categorie;
-	private int id_utilisateur;
-	
-	
-	
-	
-	
+	private int id_utilisateur;	
 	
 	public Tache() {
 		super();
@@ -76,7 +71,6 @@ public class Tache {
 		this.categorie = categorie;
 	}
 	
-
 	@Override
 	public String toString() {
 		return "Tache [ name=" + name + ", description=" + description + ", date_de_creation="
