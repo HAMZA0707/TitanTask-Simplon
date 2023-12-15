@@ -64,7 +64,7 @@ public class CrudTache implements ICrudtache{
 		System.out.print("description : ");
 		String description = scanner.nextLine();
 		
-		System.out.print("priorite : ");
+		System.out.print("priorite {haute - moyenne - basse}: ");
 		String priorite = scanner.nextLine();
 		
 
@@ -205,7 +205,7 @@ public class CrudTache implements ICrudtache{
 				System.out.println("new description : ");
 				String description = scanner.nextLine();
 				
-				System.out.println("new priorite : ");
+				System.out.println("new priorite {haute - moyenne - basse}: ");
 				String priorite = scanner.nextLine();
 				
 				System.out.println("liste des categories existantes :\n  ");

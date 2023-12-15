@@ -60,10 +60,14 @@ public class MainClass {
                 int inputChoix = scanner.nextInt();
                 switch (inputChoix) {
                     case 1:
-                    	gestionTacheAdmin(utilisateur);
+                    	if(gestionTacheAdmin(utilisateur)==1) {
+                    		return 1;
+                    	}
                         break;
                     case 2:
-                    	gestionUserAdmin(utilisateur);
+                    	if(gestionUserAdmin(utilisateur)==1) {
+                    		return 1;
+                    	}
                         break;
                     case 3:
                         System.out.println("Gestion de compte");
@@ -156,7 +160,7 @@ public class MainClass {
         }
 
     }
-    static void gestionTacheAdmin(Utilisateur utilisateur) {
+    static int gestionTacheAdmin(Utilisateur utilisateur) {
     	CrudTache managmenetTache = new CrudTache();
         AffecterTask at=new AffecterTask();
         Export_Import ei=new Export_Import();
@@ -221,8 +225,9 @@ public class MainClass {
 					        System.out.println("Echec Import");
 					    break;
                     case 10:
-                        scanner.close();
-                        System.exit(0);
+                        //scanner.close();
+                        //System.exit(0);
+                    	return 1;
                     default:
                         System.out.println("\u001b[31mLe nombre incorrect\u001b[0m");
                 }
@@ -232,7 +237,7 @@ public class MainClass {
 
         }
     }
-    static void gestionUserAdmin(Utilisateur utilisateur) {
+    static int gestionUserAdmin(Utilisateur utilisateur) {
     	ManagmenetUtilisateur manageUser = new ManagmenetUtilisateur();
         
         while (true) {
@@ -271,8 +276,9 @@ public class MainClass {
                             System.out.println("Suppression refusee");
                         break;
                     case 5:
-                        scanner.close();
-                        System.exit(0);
+                        //scanner.close();
+                        //System.exit(0);
+                    	return 1;
                     default:
                         System.out.println("\u001b[31mLe nombre incorrect\u001b[0m");
                 }
