@@ -2,6 +2,8 @@
  Simplon BootCamp
 
 ## Deuxieme Brief [Gestionnaire Des Tâches ](https://github.com/MariamLaghfiri/TitanTask) 
+L'application "TitanTask" est conçue pour simplifier la gestion des tâches et des projets au sein de l'école "Titan School". <br />
+Elle vise à améliorer l'efficacité opérationnelle en facilitant la planification, le suivi et la collaboration entre les membres du personnel éducatif.<br />
 
 ## Les Fonctionnalites principales:
 1- Gestion des Tâches : <br />
