@@ -72,7 +72,7 @@ public class GestionUtilisateur {
                     case 8:
 
                         if (ei.import_tache(utilisateur.getId())){
-                            System.out.println("Import reussi");
+                            System.out.println("\u001b[32mImport reussi\u001b[0m");
                         }else
                             System.out.println("\u001b[31mEchec Import\u001b[0m");
                         break;

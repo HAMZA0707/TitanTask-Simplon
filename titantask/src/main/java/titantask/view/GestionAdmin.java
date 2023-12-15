@@ -39,10 +39,7 @@ public class GestionAdmin {
                         break;
                     case 3:
                         System.out.println("M3a Salama");
-                        //scanner.close();
                         return 1;
-                    //System.exit(0);
-                    //break;
                     default:
                         System.out.println("\u001b[31mLe nombre incorrect\u001b[0m");
                 }
@@ -53,7 +50,7 @@ public class GestionAdmin {
         }
 
     }
-    static int gestionTacheAdmin(Utilisateur utilisateur) {
+    static int gestionTacheAdmin(Utilisateur utilisateur) throws InterruptedException {
         ManagementTache managmenetTache = new ManagementTache();
         AffecterTask at=new AffecterTask();
         ExportImport ei=new ExportImport();
@@ -61,16 +58,27 @@ public class GestionAdmin {
             System.out.println("\u001b[32m===========================================================================\u001b[0m");
             System.out.println("Choisis une option");
             System.out.println("\u001B[38;5;214m1. Ajouter une tache");
+            Thread.sleep(500);
             System.out.println("2. Modifier une tache");
+            Thread.sleep(500);
             System.out.println("3. Afficher list des taches");
+            Thread.sleep(500);
             System.out.println("4. Supprimer liste des taches");
+            Thread.sleep(500);
             System.out.println("5. Filter les taches par categorie");
+            Thread.sleep(500);
             System.out.println("6. Trier les Taches par priorite ou date creation");
+            Thread.sleep(500);
             System.out.println("7. Affecter une tache");
+            Thread.sleep(500);
             System.out.println("8. Exporter vos taches");
+            Thread.sleep(500);
             System.out.println("9. Importer list des taches");
+            Thread.sleep(500);
             System.out.println("10. Afficher Historique des operations des utilisateurs\u001B[0m");
+            Thread.sleep(500);
             System.out.println("\u001b[31m11. Deconnection\u001b[0m");
+            Thread.sleep(500);
             System.out.print("Entrez le numéro de votre choix: ");
             try {
                 Scanner scanner = new Scanner(System.in);
@@ -78,7 +86,7 @@ public class GestionAdmin {
                 switch (inputChoix) {
                     case 1:
                         if (managmenetTache.ajouter(utilisateur) == 1){
-                            System.out.println("ajout success");
+                            System.out.println("\u001b[32majout success\u001b[0m");
                         }else
                             System.out.println("ajout refusee");
                         break;
@@ -99,19 +107,19 @@ public class GestionAdmin {
                         break;
                     case 7:
                         if (at.affecterTache() == 1){
-                            System.out.println("Tache  Affecter");
+                            System.out.println("\u001b[32mTache Affecter\u001b[0m");
                         }else
-                            System.out.println("Tache pas affecter");
+                            System.out.println("\u001b[32mTache pas affecter\u001b[0m");
                         break;
                     case 8:
                         if (ei.export_Tache(utilisateur.getId())){
-                            System.out.println("Export reussi");
+                            System.out.println("\u001b[32mExport reussi\u001b[0m");
                         }else
                             System.out.println("Echec Export");
                         break;
                     case 9:
                         if (ei.import_tache(inputChoix)){
-                            System.out.println("Import reussi");
+                            System.out.println("\u001b[32mImport reussi\u001b[0m");
                         }else
                             System.out.println("Echec Import");
                         break;
@@ -153,15 +161,15 @@ public class GestionAdmin {
                 switch (inputChoix) {
                     case 1:
                         if (manageUser.ajouter()){
-                            System.out.println("ajout success");
+                            System.out.println("\u001b[32majout success\u001b[0m");
                         }else
-                            System.out.println("ajout refusee");
+                            System.out.println("\u001b[31majout refusee\u001b[0m");
                         break;
                     case 2:
                         if (manageUser.modifier()){
-                            System.out.println("Modification reussi");
+                            System.out.println("\u001b[32mModification reussi\u001b[0m");
                         }else
-                            System.out.println("Modification refusee");
+                            System.out.println("\u001b[31mModification refusee\u001b[0m");
                         break;
                     case 3:
                         System.out.println(manageUser.afficher().toString());
@@ -169,9 +177,9 @@ public class GestionAdmin {
                         break;
                     case 4:
                         if (manageUser.supprimer()){
-                            System.out.println("Suppression reussi");
+                            System.out.println("\u001b[32mSuppression reussi\u001b[0m");
                         }else
-                            System.out.println("Suppression refusee");
+                            System.out.println("\u001b[31mSuppression refusee\u001b[0m");
                         break;
                     case 5:
                         return 1;
